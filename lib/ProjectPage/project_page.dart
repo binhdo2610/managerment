@@ -1,0 +1,250 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/ProjectPage/over_view_scroll.dart';
+import 'package:managerment/ProjectPage/progress_cart.dart';
+import 'package:managerment/ProjectPage/project_detail.dart';
+import 'package:managerment/theme/app_theme.dart';
+import 'package:managerment/theme/theme_service.dart';
+
+class ProjectPage extends StatelessWidget {
+  final String username;
+  const ProjectPage({
+    Key? key,
+    required this.username,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Scaffold(
+      drawer: Drawer(
+        // Add your drawer items here
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children:  <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: ThemeColor.info,
+              ),
+              child: Text(
+                'Change Something',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            InkWell(
+              onTap:(){
+                ThemeService().SwitchTheme();
+              },
+              child: ListTile(
+                leading: Icon(Get.isDarkMode?Icons.wb_sunny_rounded:Icons.nightlight_round),
+                title: Text('Dark/Light'),
+              ),
+            ),
+            ExpansionTile(
+              title: Text('Language'),
+              leading: Icon(Icons.language),
+              children: [
+                ListTile(
+                  leading: Image.asset('assets/icons/vie.jpg'),
+                  title: Text('English'),
+                ),
+                ListTile(
+                  leading: Image.asset('assets/icons/vie.jpg'),
+                  title: Text('Vietnam'),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            color: theme.scaffoldBackgroundColor,
+            padding: const EdgeInsets.all(0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: ThemeColor.primary,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Builder(
+                              builder: (context) => GestureDetector(
+                                onTap: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                                child: Icon(
+                                  CupertinoIcons.bars,
+                                  size: 35,
+                                  color: ThemeColor.background,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 123, 0, 245),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: const Icon(CupertinoIcons.bell,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Hello, ',
+                                    style: GoogleFonts.montserrat(
+                                        color: ThemeColor.background,
+                                        fontSize: 28),
+                                  ),
+                                  TextSpan(
+                                    text: username,
+                                    style: GoogleFonts.montserrat(
+                                      color: ThemeColor.background,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              "Have a nice day!",
+                              style: GoogleFonts.montserrat(
+                                color: ThemeColor.background,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15),
+                        Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 38,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color: ThemeColor.secondaryLight1,
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(CupertinoIcons.add, color: ThemeColor.background),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Create new Project',
+                              style: GoogleFonts.poppins(
+                                color: ThemeColor.background,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                              color: ThemeColor.background,
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                ),
+                              ]),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Search your task',
+                              hintStyle: GoogleFonts.montserrat(
+                                color: ThemeColor.grey200,
+                                fontSize: 18,
+                              ),
+                              icon: Icon(
+                                Icons.search,
+                                color: ThemeColor.primaryLight2
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 20),
+                  child: OverView(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Progress",
+                        style: GoogleFonts.montserrat(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => ProjectDetail()),
+                          );
+                        },
+                        child: ProgressCart(
+                            projectName: 'Project', completedPercent: 30),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
