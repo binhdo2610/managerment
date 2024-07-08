@@ -5,6 +5,7 @@ import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/ProjectPage/project_page.dart';
 import 'package:managerment/TaskPage/task_page.dart';
 import 'package:managerment/model/task_model.dart';
+import 'package:managerment/profile/profile_screen.dart';
 import 'ChatPage/home_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,7 +78,20 @@ class _HomePageState extends State<HomePage> {
                 height: 85,  // Increase the height
                 child: FloatingActionButton(
                   onPressed: () {
-                    // showModalBottomSheet(context: , builder: )
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        return FractionallySizedBox(
+                          heightFactor: 0.9,
+                          child: ProfileScreen(),
+                        );
+                      },
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    // );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -89,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Icon(
                       Icons.person,
-size: 36,  // Increase the icon size if necessary
+                      size: 36,
                     ),
                   ),
                   backgroundColor: Colors.white,

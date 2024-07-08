@@ -77,7 +77,26 @@ class _RegisterPageState extends State<RegisterPage> {
                          SizedBox(height: 10,),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              labelText: "Full Name",
+                              labelText: "Last Name",
+                              prefixIcon: Icon(
+                                Icons.person,
+                                color: Theme.of(context).primaryColor,
+                              )),
+                          onChanged: (val) {
+                            setState(() {
+                              fullName = val;
+                            });
+                          },
+                          validator: (val) {
+                            if (val!.isNotEmpty) {
+                              return null;
+                            } else {
+                              return "Name cannot be empty";
+                            }
+                          },
+                        ),TextFormField(
+                          decoration: textInputDecoration.copyWith(
+                              labelText: "First Name",
                               prefixIcon: Icon(
                                 Icons.person,
                                 color: Theme.of(context).primaryColor,
