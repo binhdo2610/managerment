@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:managerment/model/project_model.dart';
 import 'package:managerment/model/task_model.dart';
 import 'package:managerment/theme/app_theme.dart';
 
@@ -15,6 +16,7 @@ class AddNewTask extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<AddNewTask> {
+  late Project idProject;
   final _formKey = GlobalKey<FormState>();
   late TextEditingController titleController;
   late TextEditingController desController;
@@ -337,4 +339,17 @@ class _MyWidgetState extends State<AddNewTask> {
       ),
     );
   }
+  // void SubmitData(){
+  //   final title = titleController.text;
+  //   final description = desController.text;
+  //   final expiredAt = dateController.text;
+  //   final idProject = idProject;
+
+  //   final body ={
+  //     "title": title,
+  //     "description": description,
+  //     "expiredAt": expiredAt,
+  //     "idProject"
+  //   }
+  // }
 }

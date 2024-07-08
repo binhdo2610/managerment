@@ -1,8 +1,10 @@
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_scroll.dart';
 import 'package:managerment/ProjectPage/progress_cart.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
@@ -23,7 +25,7 @@ class ProjectPage extends StatelessWidget {
         // Add your drawer items here
         child: ListView(
           padding: EdgeInsets.zero,
-          children:  <Widget>[
+          children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
                 color: ThemeColor.info,
@@ -37,11 +39,13 @@ class ProjectPage extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap:(){
+              onTap: () {
                 ThemeService().SwitchTheme();
               },
               child: ListTile(
-                leading: Icon(Get.isDarkMode?Icons.wb_sunny_rounded:Icons.nightlight_round),
+                leading: Icon(Get.isDarkMode
+                    ? Icons.wb_sunny_rounded
+                    : Icons.nightlight_round),
                 title: Text('Dark/Light'),
               ),
             ),
@@ -49,13 +53,19 @@ class ProjectPage extends StatelessWidget {
               title: Text('Language'),
               leading: Icon(Icons.language),
               children: [
-                ListTile(
-                  leading: Image.asset('assets/icons/vie.jpg'),
-                  title: Text('English'),
+                GestureDetector(
+                  onTap: (){},
+                  child: ListTile(
+                    leading: CountryFlag.fromCountryCode('US', shape: Circle()),
+                    title: Text('English'),
+                  ),
                 ),
-                ListTile(
-                  leading: Image.asset('assets/icons/vie.jpg'),
-                  title: Text('Vietnam'),
+                GestureDetector(
+                  onTap: (){},
+                  child: ListTile(
+                    leading: CountryFlag.fromCountryCode('VN', shape: Circle()),
+                    title: Text('Vietnam'),
+                  ),
                 )
               ],
             ),
@@ -122,13 +132,13 @@ class ProjectPage extends StatelessWidget {
                                 children: [
                                   TextSpan(
                                     text: 'Hello, ',
-                                    style: GoogleFonts.montserrat(
+                                    style: GoogleFonts.poppins(
                                         color: ThemeColor.background,
                                         fontSize: 28),
                                   ),
                                   TextSpan(
                                     text: username,
-                                    style: GoogleFonts.montserrat(
+                                    style: GoogleFonts.poppins(
                                       color: ThemeColor.background,
                                       fontSize: 25,
                                       fontWeight: FontWeight.w600,
@@ -139,7 +149,7 @@ class ProjectPage extends StatelessWidget {
                             ),
                             Text(
                               "Have a nice day!",
-                              style: GoogleFonts.montserrat(
+                              style: GoogleFonts.poppins(
                                 color: ThemeColor.background,
                                 fontSize: 18,
                               ),
@@ -148,34 +158,42 @@ class ProjectPage extends StatelessWidget {
                         ),
                         SizedBox(height: 15),
                         Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 38,
-                              height: 42,
-                              decoration: BoxDecoration(
-                                color: ThemeColor.secondaryLight1,
-                                shape: BoxShape.circle,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 38,
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  color: ThemeColor.secondaryLight1,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AddProjectScreen(),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(CupertinoIcons.add,
+                                      color: ThemeColor.background),
+                                ),
                               ),
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(CupertinoIcons.add, color: ThemeColor.background),
+                              SizedBox(
+                                height: 5,
                               ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              'Create new Project',
-                              style: GoogleFonts.poppins(
-                                color: ThemeColor.background,
-                                fontSize: 18,
+                              Text(
+                                'Create new Project',
+                                style: GoogleFonts.poppins(
+                                  color: ThemeColor.background,
+                                  fontSize: 18,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
                         SizedBox(
                           height: 20,
                         ),
@@ -199,10 +217,8 @@ class ProjectPage extends StatelessWidget {
                                 color: ThemeColor.grey200,
                                 fontSize: 18,
                               ),
-                              icon: Icon(
-                                Icons.search,
-                                color: ThemeColor.primaryLight2
-                              ),
+                              icon: Icon(Icons.search,
+                                  color: ThemeColor.primaryLight2),
                             ),
                           ),
                         ),
@@ -221,7 +237,7 @@ class ProjectPage extends StatelessWidget {
                     children: [
                       Text(
                         "Progress",
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
