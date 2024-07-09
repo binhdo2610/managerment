@@ -27,8 +27,9 @@ class AuthApi{
     final response = await Dio().post(
       url,
       data: body,
+      options: Options(contentType:"application/json" ),   
     );
-    Map<String, dynamic> data = new Map<String, dynamic>.from(response.data);
+    
 
     if (response.statusCode == 200) {  
         return true;
@@ -61,5 +62,16 @@ class AuthApi{
       throw Exception('Gagal Login');
     }
     
+  }
+  Future<String> getUser({required String id}) async { 
+    var url = '${BaseAPI.FLUTTER_API_URL}' + 'api/User/{id}?id=${id}';
+    var respones = await Dio().post(url);
+    int? statusCode = respones.statusCode;
+    if (statusCode == 200) {
+       
+      return respones.data ;
+    } else {
+      throw Exception('Gagal Login');
+    }
   }
 } 

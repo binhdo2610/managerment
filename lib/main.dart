@@ -10,9 +10,12 @@ import 'package:managerment/theme/app_theme.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:managerment/theme/theme_service.dart';
 
+import 'utils/sharePreferenceUtils.dart';
+
 Future<void> main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  await SharedPrefs.init();
   // runApp(const MyApp());
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeColor.light,
       darkTheme: ThemeColor.dark,
       themeMode: ThemeService().theme,
-      home: HomePage(fullname: '',),
+      home: LoginPage(),
     );
   }
 }

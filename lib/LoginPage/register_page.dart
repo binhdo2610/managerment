@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:managerment/LoginPage/login_page.dart';
+import 'package:managerment/api_services/auth_api.dart';
 import 'package:managerment/api_services/auth_service.dart';
 import 'package:managerment/api_services/helper_function.dart';
 import 'package:managerment/home_page.dart';
@@ -18,12 +19,15 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  late AuthApi _authApi = AuthApi();
   String username = "";
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
-  String fullName = "";
+  String firstname= "";
+  String lastname = "";
+ 
   AuthService authService = AuthService();
   
   @override
@@ -73,8 +77,28 @@ class _RegisterPageState extends State<RegisterPage> {
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w400)),
                                 SizedBox(height: 10,),
-                        Image.asset("images/logo.png"),
+                        Image.asset("assets/logo.jpg"),
                          SizedBox(height: 10,),
+                         TextFormField(
+                          decoration: textInputDecoration.copyWith(
+                              labelText: "Username",
+                              prefixIcon: Icon(
+                                Icons.person,
+                                color: Theme.of(context).primaryColor,
+                              )),
+                          onChanged: (val) {
+                            setState(() {
+                              username = val;
+                            });
+                          },
+                          validator: (val) {
+                            if (val!.isNotEmpty) {
+                              return null;
+                            } else {
+                              return "Username cannot be empty";
+                            }
+                          },
+                        ), const SizedBox(height: 15),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "Last Name",
@@ -84,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               )),
                           onChanged: (val) {
                             setState(() {
-                              fullName = val;
+                              lastname = val;
                             });
                           },
                           validator: (val) {
@@ -94,7 +118,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               return "Name cannot be empty";
                             }
                           },
-                        ),TextFormField(
+                        ),
+                         const SizedBox(height: 15),
+                         TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "First Name",
                               prefixIcon: Icon(
@@ -103,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               )),
                           onChanged: (val) {
                             setState(() {
-                              fullName = val;
+                              firstname = val;
                             });
                           },
                           validator: (val) {
@@ -125,9 +151,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Theme.of(context).primaryColor,
                               )),
                           onChanged: (val) {
+                            
                             setState(() {
                               email = val;
                             });
+                            
                           },
 
                           // check tha validation
@@ -149,11 +177,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Theme.of(context).primaryColor,
                               )),
                           validator: (val) {
-                            if (val!.length < 6) {
-                              return "Password must be at least 6 characters";
-                            } else {
-                              return null;
-                            }
+                            return RegExp(r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").hasMatch(val!) ? null :"Please enter a valid password";
+
                           },
                           onChanged: (val) {
                             setState(() {
@@ -214,21 +239,28 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         _isLoading = true;
       });
+      var status = await _authApi.signupAPI(email, username, lastname, firstname, password);
+      if(status){
+        showSnackbar(context, Colors.red, "Đăng kí thành công ");
+        Navigator.push(context,MaterialPageRoute(builder: (context)=>HomePage(fullname: username)));
+      }
+      else { 
+        setState(() {
+          _isLoading = false ; 
+        });
+        throw Exception("Đăng kí thất bại ");
+      }
+      
       await authService
-          .registerUserWithEmailandPassword(fullName, email, password)
+          .registerUserWithEmailandPassword(firstname, email, password)
           .then((value) async {
         if (value == true) {
           // saving the shared preference state
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
-          await HelperFunctions.saveUserNameSF(fullName);
-          nextScreenReplace(context, HomePage(fullname:fullName ,));
-        } else {
-          showSnackbar(context, Colors.red, value);
-          setState(() {
-            _isLoading = false;
-          });
-        }
+          await HelperFunctions.saveUserNameSF(firstname);
+          nextScreenReplace(context, HomePage(fullname:username ,));
+        } 
       });
     }
   }
