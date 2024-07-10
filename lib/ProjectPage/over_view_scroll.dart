@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:managerment/ProjectPage/over_view_card.dart';
+import 'package:managerment/api_services/add_project_service.dart';
 
 
 class OverView extends StatefulWidget {
@@ -11,10 +12,15 @@ class OverView extends StatefulWidget {
 
 class _OverViewState extends State<OverView> with TickerProviderStateMixin {
   late TabController tabController;
+
+  bool isLoading = true;
+  List items = [];
+
   @override
   void initState() {
     tabController = new TabController(length: 3, vsync: this, initialIndex: 0);
     super.initState();
+    _fetchTodo();
   }
 
   @override
@@ -72,6 +78,13 @@ class _OverViewState extends State<OverView> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+  Future<void> _fetchTodo() async {
+    final fetchedItems = await AddProject.FetchTodo();
+    setState(() {
+      items = fetchedItems;
+      isLoading = false;
+    });
   }
 }
 

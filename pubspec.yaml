@@ -18,8 +18,9 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
-environment:
-  sdk: '>=3.4.0 <4.0.0'
+environment: 
+  sdk: '>=3.4.1 <4.0.0'
+  
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,7 +31,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -53,6 +53,10 @@ dependencies:
   firebase_auth: ^5.1.1
   cloud_firestore: ^5.0.2
   firebase_storage: ^12.1.0
+  http: ^1.2.1
+  signalr_netcore: ^1.3.9
+  signalr_flutter: ^0.2.0
+  country_flags: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -104,16 +108,7 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
+    - assets/icons/
+    - assets/images/
     - assets/
-    - images/img_fb.png
-    - images/img_meta.png
-   
-    - images/title.jpg
-    - images/site.jpg
-    - images/logo2.jpg
-    - images/title2.jpg
-    - images/getin.jpg
-    - images/logo3.jpg
-    - images/title3.jpg
-    - images/forgotpass.jpg
-    - images/sentence1.jpg
+

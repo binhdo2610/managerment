@@ -4,9 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:managerment/KanbanBoard/kanban_board.dart';
 
-
-class OverViewCard extends StatelessWidget {
+class OverViewCard extends StatefulWidget {
   const OverViewCard({Key? key}) : super(key: key);
+
+  @override
+  State<OverViewCard> createState() => _OverViewCardState();
+}
+
+class _OverViewCardState extends State<OverViewCard> {
+  TextEditingController title = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +45,21 @@ class OverViewCard extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                Text(
-                  "project",
-                  style: GoogleFonts.montserrat(color: Colors.white),
-                ),
               ],
             ),
-            Text(
-              "Back End Development",
-              style: GoogleFonts.montserrat(color: Colors.white, fontSize: 15),
-            ),
-            Text(
-              '${DateFormat.MMMd().format((DateTime.now()))}',
-              style: GoogleFonts.montserrat(color: Colors.white, fontSize: 15),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap:(){},
+                  child: Icon(Icons.edit),
+                ),
+                GestureDetector(
+                  onTap:(){},
+                  child: Icon(Icons.delete),
+                ),
+              ],
+            )
           ],
         ),
         decoration: BoxDecoration(
