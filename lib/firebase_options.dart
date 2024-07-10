@@ -78,4 +78,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'groupchat-d69aa.appspot.com',
     iosBundleId: 'com.example.ui',
   );
+
 }

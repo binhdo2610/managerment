@@ -1,7 +1,9 @@
+
 import 'dart:convert';
 
 import 'package:country_flags/country_flags.dart';
 import 'package:dio/dio.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -75,6 +77,7 @@ class _ProjectPageState extends State<ProjectPage> {
               children: [
                 GestureDetector(
                   onTap: () {},
+
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('US', shape: Circle()),
                     title: Text('English'),
@@ -82,6 +85,7 @@ class _ProjectPageState extends State<ProjectPage> {
                 ),
                 GestureDetector(
                   onTap: () {},
+
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('VN', shape: Circle()),
                     title: Text('Vietnam'),
@@ -158,6 +162,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                   ),
                                   TextSpan(
                                     text: widget.username,
+
                                     style: GoogleFonts.poppins(
                                       color: ThemeColor.background,
                                       fontSize: 25,
@@ -191,6 +196,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                 child: IconButton(
                                   onPressed: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=> AddProjectScreen()));
+
                                   },
                                   icon: Icon(CupertinoIcons.add,
                                       color: ThemeColor.background),
@@ -252,6 +258,7 @@ class _ProjectPageState extends State<ProjectPage> {
                     children: [
                       Text(
                         "Project",
+
                         style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 20,
