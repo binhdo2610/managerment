@@ -1,20 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:managerment/KanbanBoard/kanban_board.dart';
-
+import 'package:managerment/theme/app_theme.dart';
 
 class OverViewCard extends StatelessWidget {
-  const OverViewCard({Key? key}) : super(key: key);
+  final Map item;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  final VoidCallback onRefresh;
+
+  const OverViewCard({
+    Key? key,
+    required this.item,
+    required this.onEdit,
+    required this.onDelete,
+    required this.onRefresh,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => KanbanBoard()),
-      ),
+      onTap: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => KanbanBoard()),
+        );
+        onRefresh();
+      },
       child: Container(
         padding: EdgeInsets.all(20),
         margin: EdgeInsets.fromLTRB(0, 5, 20, 5),
@@ -22,7 +36,6 @@ class OverViewCard extends StatelessWidget {
         height: 250,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
@@ -31,33 +44,52 @@ class OverViewCard extends StatelessWidget {
                   height: 40,
                   margin: EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 123, 0, 245),
+                    color: ThemeColor.primary,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
-                  child: const Icon(
-                    CupertinoIcons.person,
-                    color: Colors.white,
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.code,
+                      color: ThemeColor.background,
+                    ),
                   ),
                 ),
-                Text(
-                  "project",
-                  style: GoogleFonts.montserrat(color: Colors.white),
+                Expanded(
+                  child: Text(
+                    item['title'],
+                    style: GoogleFonts.poppins(color: ThemeColor.background),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
-            Text(
-              "Back End Development",
-              style: GoogleFonts.montserrat(color: Colors.white, fontSize: 15),
-            ),
-            Text(
-              '${DateFormat.MMMd().format((DateTime.now()))}',
-              style: GoogleFonts.montserrat(color: Colors.white, fontSize: 15),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    onEdit();
+                    onRefresh();
+                  },
+                  child: Icon(Icons.edit),
+                ),
+                SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    onDelete();
+                    onRefresh();
+                  },
+                  child: Icon(Icons.delete),
+                ),
+              ],
             ),
           ],
         ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            color: Color.fromARGB(150, 123, 0, 245)),
+          borderRadius: BorderRadius.circular(20.0),
+          color: ThemeColor.primaryLight1,
+        ),
       ),
     );
   }

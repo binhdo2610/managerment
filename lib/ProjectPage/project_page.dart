@@ -1,4 +1,9 @@
+
+import 'dart:convert';
+
 import 'package:country_flags/country_flags.dart';
+import 'package:dio/dio.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,15 +13,32 @@ import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_scroll.dart';
 import 'package:managerment/ProjectPage/progress_cart.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
+import 'package:managerment/api_services/add_project_service.dart';
+import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/theme/app_theme.dart';
 import 'package:managerment/theme/theme_service.dart';
 
-class ProjectPage extends StatelessWidget {
+class ProjectPage extends StatefulWidget {
   final String username;
   const ProjectPage({
     Key? key,
     required this.username,
   }) : super(key: key);
+
+  @override
+  State<ProjectPage> createState() => _ProjectPageState();
+}
+
+class _ProjectPageState extends State<ProjectPage> {
+  // List items = [];
+  // bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    //FetchTodo();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -54,14 +76,16 @@ class ProjectPage extends StatelessWidget {
               leading: Icon(Icons.language),
               children: [
                 GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
+
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('US', shape: Circle()),
                     title: Text('English'),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
+
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('VN', shape: Circle()),
                     title: Text('Vietnam'),
@@ -137,7 +161,8 @@ class ProjectPage extends StatelessWidget {
                                         fontSize: 28),
                                   ),
                                   TextSpan(
-                                    text: username,
+                                    text: widget.username,
+
                                     style: GoogleFonts.poppins(
                                       color: ThemeColor.background,
                                       fontSize: 25,
@@ -169,13 +194,9 @@ class ProjectPage extends StatelessWidget {
                                   shape: BoxShape.circle,
                                 ),
                                 child: IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => AddProjectScreen(),
-                                      ),
-                                    );
+                                  onPressed: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> AddProjectScreen()));
+
                                   },
                                   icon: Icon(CupertinoIcons.add,
                                       color: ThemeColor.background),
@@ -228,7 +249,7 @@ class ProjectPage extends StatelessWidget {
                 ]),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, top: 20),
-                  child: OverView(),
+                  child: OverViewScroll(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
@@ -236,31 +257,41 @@ class ProjectPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Progress",
+                        "Project",
+
                         style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => ProjectDetail()),
-                          );
-                        },
-                        child: ProgressCart(
-                            projectName: 'Project', completedPercent: 30),
-                      ),
                     ],
                   ),
                 ),
               ],
             ),
+         
           ),
         ),
       ),
+      //extendBody: SafeArea(child: ListView(addAutomaticKeepAlives,),),   
     );
   }
+  // Future<void> _fetchTodo() async {
+  //   final fetchedItems = await AddProject.FetchTodo();
+  //   setState(() {
+  //     items = fetchedItems;
+  //     isLoading = false;
+  //   });
+  // }
+  // void navigateToAddProject() {
+  //   final route = MaterialPageRoute(
+  //     builder: (context) => AddProjectScreen(),
+  //   );
+  //   Navigator.push(context, route).then((result) {
+  //     if (result == true) {
+  //       _fetchTodo();
+  //     }
+  //   });
+  // }
 }

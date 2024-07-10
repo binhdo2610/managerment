@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:managerment/LoginPage/login_page.dart';
 import 'package:managerment/api_services/auth_service.dart';
 import 'package:managerment/profile/components/profile_menu.dart';
@@ -15,6 +16,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
   late AuthService _authService = AuthService();
   bool _isEditingProfile = false;
 
@@ -107,6 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ProfileMenu(
           text: "Log Out",
           icon: const Icon(Icons.logout, color: ThemeColor.grey700),
+
           press: () async{
              await _authService.signOut();
                             Navigator.of(context).pushAndRemoveUntil(

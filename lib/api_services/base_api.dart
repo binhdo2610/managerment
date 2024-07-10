@@ -1,6 +1,7 @@
 class BaseAPI {
 
-  static var FLUTTER_API_URL = 'https://purpleboard-api.azurewebsites.net/';
+ static var FLUTTER_API_URL = 'https://purpleboard-api.azurewebsites.net/';
+
 
 
   static var FLUTTER_ACCESS_TOKEN = {

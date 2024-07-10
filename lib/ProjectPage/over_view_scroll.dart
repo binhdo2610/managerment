@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_card.dart';
+import 'package:managerment/api_services/add_project_service.dart';
 
-
-class OverView extends StatefulWidget {
-  const OverView({Key? key}) : super(key: key);
+class OverViewScroll extends StatefulWidget {
+  const OverViewScroll({Key? key}) : super(key: key);
 
   @override
-  State<OverView> createState() => _OverViewState();
+  State<OverViewScroll> createState() => _OverViewState();
 }
 
-class _OverViewState extends State<OverView> with TickerProviderStateMixin {
+class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin {
   late TabController tabController;
+
+  bool isLoading = true;
+  List items = [];
+
   @override
   void initState() {
-    tabController = new TabController(length: 3, vsync: this, initialIndex: 0);
+    tabController = TabController(length: 3, vsync: this, initialIndex: 0);
     super.initState();
+    _fetchTodo();
   }
 
   @override
@@ -58,38 +64,54 @@ class _OverViewState extends State<OverView> with TickerProviderStateMixin {
             child: TabBarView(
               controller: tabController,
               children: [
-                ListView.builder(
-                    itemCount: 3,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, int index) {
-                      return OverViewCard();
-                    }),
+                isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: items.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          final item = items[index];
+                          return OverViewCard(
+                            item: item,
+                            onRefresh: _fetchTodo,
+                            onEdit: () => navigateToEditPage(item),
+                            onDelete: () => _deleteById(item['id']),
+                             // Pass the refresh callback
+                          );
+                        },
+                      ),
                 Text("Projects"),
                 Text("Projects"),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
-}
 
-class CircleTab extends Decoration {
-  @override
-  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    // TODO: implement createBoxPainter
-    return CirclePainter();
+  Future<void> _deleteById(String id) async {
+    final isSuccess = await AddProject.deleteById(id, context);
+    if (isSuccess) {
+      final filtered = items.where((element) => element['id'] != id).toList();
+      setState(() {
+        items = filtered;
+      });
+    }
   }
-}
 
-class CirclePainter extends BoxPainter {
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    Paint _paint = Paint();
-    _paint.color = Colors.black54;
-    final Offset CirclePostion =
-        Offset(configuration.size!.width - 3.0, configuration.size!.height / 2);
-    canvas.drawCircle(offset + CirclePostion, 4, _paint);
+  Future<void> _fetchTodo() async {
+    final fetchedItems = await AddProject.FetchTodo();
+    setState(() {
+      items = fetchedItems;
+      isLoading = false;
+    });
+  }
+
+  void navigateToEditPage(Map item) {
+    final route = MaterialPageRoute(
+      builder: (context) => AddProjectScreen(toProject: item),
+    );
+    Navigator.push(context, route).then((_) => _fetchTodo());
   }
 }

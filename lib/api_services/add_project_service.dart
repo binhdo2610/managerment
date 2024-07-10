@@ -1,18 +1,15 @@
-
-
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:managerment/api_services/base_api.dart';
-import 'package:managerment/theme/app_theme.dart';
-class AddProject{
-  Future<void> SubmitProject(String title, BuildContext context) async {
 
+import 'package:managerment/api_services/base_api.dart';
+import 'package:managerment/api_services/message_service.dart';
+
+class AddProject {
+  Future<bool> SubmitProject(String title, BuildContext context) async {
     var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/';
-    // final uri = Uri.parse(url);
+
     final body = {
       'title': title,
     };
@@ -22,38 +19,66 @@ class AddProject{
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
     if (response.statusCode == 200) {
-      ShowSuccessMessage("Created successfully", context);
+      MessageService.ShowSuccessMessage("Created successfully", context);
     } else {
-      ShowSuccessMessage("Failed to create", context);
+      MessageService.ShowErrorMessage("Failed to create", context);
+    }
+    return true;
+  }
+
+  static Future<List> FetchTodo() async {
+    var url = '${BaseAPI.FLUTTER_API_URL}/api/projects/';
+    final response = await Dio().get(
+      url,
+      options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
+    );
+
+    if (response.statusCode == 200) {
+      if (response.data is String) {
+        final json = jsonDecode(response.data) as List;
+        return json;
+      } else if (response.data is List) {
+        return response.data;
+      } else {
+        print("Unexpected response format");
+        return [];
+      }
+    } else {
+      print('Failed to load data');
+      return [];
     }
   }
-  void ShowSuccessMessage(String message, BuildContext context) {
-    final snackBar = SnackBar(
-      content: Text(
-        message,
-        style: GoogleFonts.poppins(
-          color: Get.isDarkMode ? ThemeColor.dark1 : ThemeColor.background,
-          fontSize: 18,
-        ),
-      ),
-      backgroundColor:
-          Get.isDarkMode ? ThemeColor.background : ThemeColor.dark1,
+  static Future<bool> deleteById(String id, BuildContext context) async {
+    var url = '${BaseAPI.FLUTTER_API_URL}/api/projects/$id';
+    final response = await Dio().delete(
+      url,
+      options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    if (response.statusCode == 204) {
+      MessageService.ShowSuccessMessage("Delete successfully", context);
+      return true;
+    } else {
+      MessageService.ShowErrorMessage("Delete failed", context);
+      return false;
+    }
   }
 
-  void ShowErrorMessage(String message, BuildContext context) {
-    final snackBar = SnackBar(
-        content: Text(
-          message,
-          style: GoogleFonts.poppins(
-            color: Get.isDarkMode ? ThemeColor.dark1 : ThemeColor.background,
-            fontSize: 18,
-          ),
-        ),
-        backgroundColor:
-            Get.isDarkMode ? ThemeColor.background : ThemeColor.dark1);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  static Future<bool> updateProject(String  id, String title, BuildContext context) async {
+     var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/$id';
+    final body = {
+      'title': title,
+    };
+    final response = await Dio().put(
+      url,
+      data: jsonEncode(body),
+      options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
+    );
+     if (response.statusCode == 200) {
+      MessageService.ShowSuccessMessage("Update successfully", context);
+      return true;
+    } else {
+      MessageService.ShowErrorMessage("Update failed", context);
+      return false;
+    }
   }
 }
-
