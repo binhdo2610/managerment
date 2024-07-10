@@ -6,7 +6,7 @@ import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/api_services/message_service.dart';
 
 class AddProject {
-  Future<void> SubmitProject(String title, BuildContext context) async {
+  Future<bool> SubmitProject(String title, BuildContext context) async {
     var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/';
     final body = {
       'title': title,
@@ -21,6 +21,7 @@ class AddProject {
     } else {
       MessageService.ShowErrorMessage("Failed to create", context);
     }
+    return true;
   }
 
   static Future<List> FetchTodo() async {
@@ -60,7 +61,7 @@ class AddProject {
     }
   }
 
-  static Future<void> updateProject(String  id, String title, BuildContext context) async {
+  static Future<bool> updateProject(String  id, String title, BuildContext context) async {
      var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/$id';
     final body = {
       'title': title,
@@ -72,8 +73,10 @@ class AddProject {
     );
      if (response.statusCode == 200) {
       MessageService.ShowSuccessMessage("Update successfully", context);
+      return true;
     } else {
       MessageService.ShowErrorMessage("Update failed", context);
+      return false;
     }
   }
 }

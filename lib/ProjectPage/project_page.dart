@@ -11,6 +11,7 @@ import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_scroll.dart';
 import 'package:managerment/ProjectPage/progress_cart.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
+import 'package:managerment/api_services/add_project_service.dart';
 import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/theme/app_theme.dart';
 import 'package:managerment/theme/theme_service.dart';
@@ -27,7 +28,8 @@ class ProjectPage extends StatefulWidget {
 }
 
 class _ProjectPageState extends State<ProjectPage> {
-  List items = [];
+  // List items = [];
+  // bool isLoading = true;
 
   @override
   void initState() {
@@ -187,14 +189,8 @@ class _ProjectPageState extends State<ProjectPage> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddProjectScreen(),
-                                      ),
-                                    );
+                                  onPressed: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> AddProjectScreen()));
                                   },
                                   icon: Icon(CupertinoIcons.add,
                                       color: ThemeColor.background),
@@ -247,7 +243,7 @@ class _ProjectPageState extends State<ProjectPage> {
                 ]),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, top: 20),
-                  child: OverView(),
+                  child: OverViewScroll(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
@@ -274,4 +270,21 @@ class _ProjectPageState extends State<ProjectPage> {
       //extendBody: SafeArea(child: ListView(addAutomaticKeepAlives,),),   
     );
   }
+  // Future<void> _fetchTodo() async {
+  //   final fetchedItems = await AddProject.FetchTodo();
+  //   setState(() {
+  //     items = fetchedItems;
+  //     isLoading = false;
+  //   });
+  // }
+  // void navigateToAddProject() {
+  //   final route = MaterialPageRoute(
+  //     builder: (context) => AddProjectScreen(),
+  //   );
+  //   Navigator.push(context, route).then((result) {
+  //     if (result == true) {
+  //       _fetchTodo();
+  //     }
+  //   });
+  // }
 }
