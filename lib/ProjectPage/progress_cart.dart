@@ -6,10 +6,9 @@ import 'package:managerment/theme/app_theme.dart';
 
 class ProgressCart extends StatelessWidget {
   ProgressCart(
-      {Key? key, required this.projectName, required this.completedPercent})
+      {Key? key})
       : super(key: key);
-  late String projectName;
-  late int completedPercent;
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,6 @@ class ProgressCart extends StatelessWidget {
           Container(
             width: 3,
             margin: EdgeInsets.only(top: 10),
-            height: 80 * 0.01 * this.completedPercent,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 123, 0, 245),
                 borderRadius: BorderRadius.circular(10)),
@@ -54,7 +52,7 @@ class ProgressCart extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        this.projectName,
+                        'a',
                         style: GoogleFonts.poppins(
                           color: Get.isDarkMode?ThemeColor.background:ThemeColor.dark2,
                           fontSize: 15,

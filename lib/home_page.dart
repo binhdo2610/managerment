@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
               onGenerateRoute: (setting){
                 Widget page = ProjectPage(username: '');
                 if(setting.name == 'ProjectDetail'){
-                  page = ProjectDetail();
+                   page = HomePage(fullname: '',);
                   return MaterialPageRoute(builder: (_) => page);
                 }
                 else{

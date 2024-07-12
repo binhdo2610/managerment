@@ -1,26 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:managerment/KanbanBoard/kanban_board.dart';
+import 'package:managerment/ProjectPage/project_detail.dart';
+import 'package:managerment/theme/app_theme.dart';
 
-class OverViewCard extends StatefulWidget {
-  const OverViewCard({Key? key}) : super(key: key);
+class OverViewCard extends StatelessWidget {
+  final Map item;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  final VoidCallback onRefresh;
 
-  @override
-  State<OverViewCard> createState() => _OverViewCardState();
-}
-
-class _OverViewCardState extends State<OverViewCard> {
-  TextEditingController title = new TextEditingController();
+  const OverViewCard({
+    Key? key,
+    required this.item,
+    required this.onEdit,
+    required this.onDelete,
+    required this.onRefresh,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => KanbanBoard()),
-      ),
+      onTap: () async {
+        print(item['id']);
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProjectDetail(projectId: item['id'],)),
+        );
+        onRefresh();
+      },
       child: Container(
         padding: EdgeInsets.all(20),
         margin: EdgeInsets.fromLTRB(0, 5, 20, 5),
@@ -28,7 +38,6 @@ class _OverViewCardState extends State<OverViewCard> {
         height: 250,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
@@ -37,34 +46,52 @@ class _OverViewCardState extends State<OverViewCard> {
                   height: 40,
                   margin: EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 123, 0, 245),
+                    color: ThemeColor.primary,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
-                  child: const Icon(
-                    CupertinoIcons.person,
-                    color: Colors.white,
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.code,
+                      color: ThemeColor.background,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    item['title'],
+                    style: GoogleFonts.poppins(color: ThemeColor.background),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 GestureDetector(
-                  onTap:(){},
+                  onTap: () {
+                    onEdit();
+                    onRefresh();
+                  },
                   child: Icon(Icons.edit),
                 ),
+                SizedBox(width: 10),
                 GestureDetector(
-                  onTap:(){},
+                  onTap: () {
+                    onDelete();
+                    onRefresh();
+                  },
                   child: Icon(Icons.delete),
                 ),
               ],
-            )
+            ),
           ],
         ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            color: Color.fromARGB(150, 123, 0, 245)),
+          borderRadius: BorderRadius.circular(20.0),
+          color: ThemeColor.primaryLight1,
+        ),
       ),
     );
   }

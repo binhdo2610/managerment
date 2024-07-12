@@ -6,7 +6,7 @@ import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/api_services/message_service.dart';
 
 class AddProject {
-  Future<void> SubmitProject(String title, BuildContext context) async {
+  static Future<bool> SubmitProject(String title, BuildContext context) async {
     var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/';
     final body = {
       'title': title,
@@ -21,9 +21,10 @@ class AddProject {
     } else {
       MessageService.ShowErrorMessage("Failed to create", context);
     }
+    return true;
   }
 
-  static Future<List> FetchTodo() async {
+  static Future<List> FetchProject() async {
     var url = '${BaseAPI.FLUTTER_API_URL}/api/projects/';
     final response = await Dio().get(
       url,
@@ -45,6 +46,7 @@ class AddProject {
       return [];
     }
   }
+
   static Future<bool> deleteById(String id, BuildContext context) async {
     var url = '${BaseAPI.FLUTTER_API_URL}/api/projects/$id';
     final response = await Dio().delete(
@@ -60,8 +62,9 @@ class AddProject {
     }
   }
 
-  static Future<void> updateProject(String  id, String title, BuildContext context) async {
-     var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/$id';
+  static Future<bool> updateProject(
+      String id, String title, BuildContext context) async {
+    var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/$id';
     final body = {
       'title': title,
     };
@@ -70,10 +73,12 @@ class AddProject {
       data: jsonEncode(body),
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       MessageService.ShowSuccessMessage("Update successfully", context);
+      return true;
     } else {
       MessageService.ShowErrorMessage("Update failed", context);
+      return false;
     }
   }
 }

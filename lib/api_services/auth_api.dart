@@ -28,7 +28,6 @@ class AuthApi{
       url,
       data: body,
     );
-    Map<String, dynamic> data = new Map<String, dynamic>.from(response.data);
 
     if (response.statusCode == 200) {  
         return true;
