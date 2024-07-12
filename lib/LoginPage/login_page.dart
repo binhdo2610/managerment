@@ -1,4 +1,6 @@
 
+import 'package:managerment/api_services/auth_api.dart';
+import 'package:managerment/api_services/decode_jwt.dart';
 import 'package:managerment/home_page.dart';
 
 import '../api_services/helper_function.dart';
@@ -13,6 +15,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  
+
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -23,6 +27,9 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
+  late AuthApi _authApi = AuthApi();
+  late decodeJwt _decode = decodeJwt();
+  
   bool _isLoading = false;
   AuthService authService = AuthService();
   @override
@@ -43,9 +50,9 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset('images/title.jpg', height: 200,width: 300,),
+                        Image.asset('assets/title.jpg', height: 200,width: 300,),
                         const SizedBox(height: 20,),
-                        Image.asset("images/logo.png", height: 100, width: 100,),
+                        Image.asset("assets/logo.jpg", height: 100, width: 100,),
                         const SizedBox(height: 20,),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
@@ -79,11 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Theme.of(context).primaryColor,
                               )),
                           validator: (val) {
-                            if (val!.length < 6) {
-                              return "Password must be at least 6 characters";
-                            } else {
-                              return null;
-                            }
+                           return RegExp(r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").hasMatch(val!) ? null :"Please enter a valid password";
                           },
                           onChanged: (val) {
                             setState(() {
@@ -151,9 +154,26 @@ class _LoginPageState extends State<LoginPage> {
 
   login() async {
     if (formKey.currentState!.validate()) {
+      
       setState(() {
         _isLoading = true;
       });
+      var token = await _authApi.login(email: email, password: password);
+      String username = _decode.getUsername(token: token);
+      if(token != null){
+
+         showSnackbar(context, const  Color(0xFFFF5600), "Đăng nhập thành công");
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(fullname: username)));
+      }
+      else { 
+        setState(() {
+          
+        _isLoading = false;
+          
+        });
+      }
+
+      // firebase 
       await authService
           .loginWithUserNameandPassword(email, password)
           .then((value) async {
@@ -165,12 +185,9 @@ class _LoginPageState extends State<LoginPage> {
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
           await HelperFunctions.saveUserNameSF(snapshot.docs[0]['fullName']);
-          nextScreenReplace(context ,HomePage(fullname: snapshot.docs[0]['fullName'],));
+          nextScreenReplace(context ,HomePage(fullname: username,));
         } else {
-          showSnackbar(context, const  Color(0xFFFF5600), value);
-          setState(() {
-            _isLoading = false;
-          });
+          print("ko truy cap dc user tren firebase ");
         }
       });
     }

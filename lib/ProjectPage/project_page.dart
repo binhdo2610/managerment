@@ -1,7 +1,9 @@
+
 import 'dart:convert';
 
 import 'package:country_flags/country_flags.dart';
 import 'package:dio/dio.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +13,6 @@ import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_scroll.dart';
 import 'package:managerment/ProjectPage/progress_cart.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
-import 'package:managerment/api_services/project_service.dart';
 import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/theme/app_theme.dart';
 import 'package:managerment/theme/theme_service.dart';
@@ -75,6 +76,7 @@ class _ProjectPageState extends State<ProjectPage> {
               children: [
                 GestureDetector(
                   onTap: () {},
+
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('US', shape: Circle()),
                     title: Text('English'),
@@ -82,6 +84,7 @@ class _ProjectPageState extends State<ProjectPage> {
                 ),
                 GestureDetector(
                   onTap: () {},
+
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('VN', shape: Circle()),
                     title: Text('Vietnam'),
@@ -158,6 +161,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                   ),
                                   TextSpan(
                                     text: widget.username,
+
                                     style: GoogleFonts.poppins(
                                       color: ThemeColor.background,
                                       fontSize: 25,
@@ -189,8 +193,14 @@ class _ProjectPageState extends State<ProjectPage> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: IconButton(
-                                  onPressed: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> AddProjectScreen()));
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddProjectScreen(),
+                                      ),
+                                    );
                                   },
                                   icon: Icon(CupertinoIcons.add,
                                       color: ThemeColor.background),
@@ -252,6 +262,7 @@ class _ProjectPageState extends State<ProjectPage> {
                     children: [
                       Text(
                         "Project",
+
                         style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 20,
@@ -269,4 +280,21 @@ class _ProjectPageState extends State<ProjectPage> {
       ),
     );
   }
+  // Future<void> _fetchTodo() async {
+  //   final fetchedItems = await AddProject.FetchTodo();
+  //   setState(() {
+  //     items = fetchedItems;
+  //     isLoading = false;
+  //   });
+  // }
+  // void navigateToAddProject() {
+  //   final route = MaterialPageRoute(
+  //     builder: (context) => AddProjectScreen(),
+  //   );
+  //   Navigator.push(context, route).then((result) {
+  //     if (result == true) {
+  //       _fetchTodo();
+  //     }
+  //   });
+  // }
 }

@@ -26,7 +26,7 @@ class _ProjectDetail extends State<ProjectDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    FetchTodo();
+    //FetchTodo();
   }
 
   @override
@@ -109,34 +109,34 @@ class _ProjectDetail extends State<ProjectDetail> {
             SizedBox(
               height: 30,
             ),
-            SingleChildScrollView(
-              child: Container(
-                height: double.maxFinite,
-                width: double.maxFinite,
-                child: ListView.builder(itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Sample'),
-                  );
-                }),
-              ),
-            ),
+            // SingleChildScrollView(
+            //   child: Container(
+            //     height: double.maxFinite,
+            //     width: double.maxFinite,
+            //     child: ListView.builder(itemBuilder: (context, index) {
+            //       return ListTile(
+            //         title: Text('Sample'),
+            //       );
+            //     }),
+            //   ),
+            // ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> FetchTodo() async {
-    // final projectId = widget.projectId;
-    var url = '${BaseAPI.FLUTTER_API_URL}/api/Todolists';
-    final response = await Dio()
-        .get(url, options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN));
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.data.toString()) as List;
-      final result = json;
-      setState(() {
-        items = result;
-      });
-    }
-  }
+  // Future<void> FetchTodo() async {
+  //   // final projectId = widget.projectId;
+  //   var url = '${BaseAPI.FLUTTER_API_URL}/api/Todolists';
+  //   final response = await Dio()
+  //       .get(url, options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN));
+  //   if (response.statusCode == 200) {
+  //     final json = jsonDecode(response.data.toString()) as List;
+  //     final result = json;
+  //     setState(() {
+  //       items = result;
+  //     });
+  //   }
+  // }
 }
