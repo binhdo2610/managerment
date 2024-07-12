@@ -353,7 +353,7 @@ class _MyWidgetState extends State<AddNewTask> {
       title: title,
       description: description,
       expiredAt: expiredAt,
-       context: context,
+      context: context,
     );
   }
 }
