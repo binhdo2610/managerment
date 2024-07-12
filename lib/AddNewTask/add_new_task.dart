@@ -1,22 +1,28 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:managerment/api_services/base_api.dart';
+import 'package:managerment/api_services/project_service.dart';
+import 'package:managerment/api_services/task_service.dart';
 import 'package:managerment/model/project_model.dart';
 import 'package:managerment/model/task_model.dart';
 import 'package:managerment/theme/app_theme.dart';
 
 class AddNewTask extends StatefulWidget {
-  const AddNewTask({Key? key}) : super(key: key);
+  final String projectId;
+  const AddNewTask({Key? key, required this.projectId}) : super(key: key);
 
   @override
   State<AddNewTask> createState() => _MyWidgetState();
 }
 
 class _MyWidgetState extends State<AddNewTask> {
-  late Project idProject;
   final _formKey = GlobalKey<FormState>();
   late TextEditingController titleController;
   late TextEditingController desController;
@@ -24,7 +30,6 @@ class _MyWidgetState extends State<AddNewTask> {
   late TextEditingController startTime;
   late TextEditingController endTime;
   DateTime SelectedDate = DateTime.now();
-  String Category = 'Meetings';
 
   @override
   void initState() {
@@ -32,7 +37,7 @@ class _MyWidgetState extends State<AddNewTask> {
     titleController = TextEditingController();
     desController = TextEditingController();
     dateController = TextEditingController(
-        text: '${DateFormat('EEE, MMM d, yyyy').format(this.SelectedDate)}');
+        text: '${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(this.SelectedDate)}');
     startTime = TextEditingController(
         text: '${DateFormat.jm().format(DateTime.now())}');
     endTime = TextEditingController(
@@ -50,7 +55,7 @@ class _MyWidgetState extends State<AddNewTask> {
       setState(() {
         SelectedDate = selected;
         dateController.text =
-            '${DateFormat('EEE, MMM d, yy').format(selected)}';
+            '${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(selected)}';
       });
     }
   }
@@ -278,14 +283,14 @@ class _MyWidgetState extends State<AddNewTask> {
                               decoration: InputDecoration(
                                 labelText: "Description",
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black26),
+                                  borderSide: BorderSide(color: ThemeColor.dark3),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black26),
+                                  borderSide: BorderSide(color: ThemeColor.dark3),
                                 ),
                                 fillColor: Colors.black45,
                                 labelStyle: GoogleFonts.poppins(
-                                  color: Colors.black87,
+                                  color: ThemeColor.dark2,
                                   fontSize: 18,
                                 ),
                               ),
@@ -302,17 +307,15 @@ class _MyWidgetState extends State<AddNewTask> {
                           GestureDetector(
                             onTap: () {
                               if(_formKey.currentState?.validate()?? false){
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Data'))
-                                ); 
+                                
                                 }
-                                print("${titleController.value.text}, ${desController.value.text}");
+                                _submitTask();  
                             },
                             child: Container(
                               height: 70,
                               width: MediaQuery.of(context).size.width * 0.8,
                               decoration: BoxDecoration(
-                                color: Color.fromRGBO(130, 0, 255, 1),
+                                color: ThemeColor.primary,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Center(
@@ -339,17 +342,18 @@ class _MyWidgetState extends State<AddNewTask> {
       ),
     );
   }
-  // void SubmitData(){
-  //   final title = titleController.text;
-  //   final description = desController.text;
-  //   final expiredAt = dateController.text;
-  //   final idProject = idProject;
+ Future<void> _submitTask() async {
+    String title = titleController.text;
+    String description = desController.text;
+    String expiredAt = dateController.text;
+    String projectId = widget.projectId;
 
-  //   final body ={
-  //     "title": title,
-  //     "description": description,
-  //     "expiredAt": expiredAt,
-  //     "idProject"
-  //   }
-  // }
+    await TaskService.SubmitTask(
+      projectId: projectId,
+      title: title,
+      description: description,
+      expiredAt: expiredAt,
+       context: context,
+    );
+  }
 }

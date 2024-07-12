@@ -114,22 +114,6 @@ class _TaskPageState extends State<TaskPage> {
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: [
-                          ProgressCart(
-                            projectName: "Project",
-                            completedPercent: 30,
-                          ),
-                          ProgressCart(
-                            projectName: "Project",
-                            completedPercent: 30,
-                          ),
-                          ProgressCart(
-                            projectName: "Project",
-                            completedPercent: 30,
-                          ),
-                          ProgressCart(
-                            projectName: "Project",
-                            completedPercent: 30,
-                          ),
                         ],
                       ),
                     )

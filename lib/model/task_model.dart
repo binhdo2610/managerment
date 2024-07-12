@@ -12,7 +12,5 @@ class Task{
     required this.description,
     required this.dateEnd
   });
-  
-  
 }
 

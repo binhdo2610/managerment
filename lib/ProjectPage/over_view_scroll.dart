@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_card.dart';
-import 'package:managerment/api_services/add_project_service.dart';
+import 'package:managerment/api_services/project_service.dart';
 
 class OverViewScroll extends StatefulWidget {
   const OverViewScroll({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
   void initState() {
     tabController = TabController(length: 3, vsync: this, initialIndex: 0);
     super.initState();
-    _fetchTodo();
+    _fetchProject();
   }
 
   @override
@@ -73,7 +73,7 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
                           final item = items[index];
                           return OverViewCard(
                             item: item,
-                            onRefresh: _fetchTodo,
+                            onRefresh: _fetchProject,
                             onEdit: () => navigateToEditPage(item),
                             onDelete: () => _deleteById(item['id']),
                              // Pass the refresh callback
@@ -100,8 +100,8 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
     }
   }
 
-  Future<void> _fetchTodo() async {
-    final fetchedItems = await AddProject.FetchTodo();
+  Future<void> _fetchProject() async {
+    final fetchedItems = await AddProject.FetchProject();
     setState(() {
       items = fetchedItems;
       isLoading = false;
@@ -112,6 +112,6 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
     final route = MaterialPageRoute(
       builder: (context) => AddProjectScreen(toProject: item),
     );
-    Navigator.push(context, route).then((_) => _fetchTodo());
+    Navigator.push(context, route).then((_) => _fetchProject());
   }
 }

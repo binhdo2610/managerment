@@ -13,7 +13,6 @@ import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_scroll.dart';
 import 'package:managerment/ProjectPage/progress_cart.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
-import 'package:managerment/api_services/add_project_service.dart';
 import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/theme/app_theme.dart';
 import 'package:managerment/theme/theme_service.dart';
@@ -194,9 +193,14 @@ class _ProjectPageState extends State<ProjectPage> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: IconButton(
-                                  onPressed: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> AddProjectScreen()));
-
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddProjectScreen(),
+                                      ),
+                                    );
                                   },
                                   icon: Icon(CupertinoIcons.add,
                                       color: ThemeColor.background),
@@ -274,7 +278,6 @@ class _ProjectPageState extends State<ProjectPage> {
           ),
         ),
       ),
-      //extendBody: SafeArea(child: ListView(addAutomaticKeepAlives,),),   
     );
   }
   // Future<void> _fetchTodo() async {

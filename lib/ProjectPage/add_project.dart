@@ -5,7 +5,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/ProjectPage/project_page.dart';
-import 'package:managerment/api_services/add_project_service.dart';
+import 'package:managerment/api_services/project_service.dart';
 import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/api_services/message_service.dart';
 import 'package:managerment/theme/app_theme.dart';
@@ -14,13 +14,11 @@ class AddProjectScreen extends StatefulWidget {
   final Map? toProject;
   const AddProjectScreen({super.key, this.toProject});
 
-
   @override
   State<AddProjectScreen> createState() => _AddProjectState();
 }
 
 class _AddProjectState extends State<AddProjectScreen> {
-  late AddProject addProject = AddProject();
   TextEditingController titleController = TextEditingController();
   bool isEdit = false;
   final _formKey = GlobalKey<FormState>();
@@ -136,7 +134,7 @@ class _AddProjectState extends State<AddProjectScreen> {
 
   Future<bool> SubmitProject() async {
     if (titleController.text.isNotEmpty) {
-      var token = await addProject.SubmitProject(titleController.text, context);
+      var token = await AddProject.SubmitProject(titleController.text, context);
       return token != null;
     }
     return true;
