@@ -20,7 +20,7 @@ class ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding:  EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextButton(
         style: TextButton.styleFrom(
           padding: const EdgeInsets.all(20),
@@ -33,7 +33,7 @@ class ProfileMenu extends StatelessWidget {
             icon, // Display the icon here
             const SizedBox(width: 20),
             Expanded(child: Text(text, style: GoogleFonts.poppins(color: Get.isDarkMode?ThemeColor.primaryLight1:ThemeColor.dark3,),)),
-            const Icon(Icons.arrow_forward_ios),
+             Icon(Icons.arrow_forward_ios),
           ],
         ),
       ),

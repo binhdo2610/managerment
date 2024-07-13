@@ -24,11 +24,11 @@ class _HomeChatPageState extends State<HomeChatPage> {
   bool _isLoading = false;
   String groupName = "";
 
-  @override
-  void initState() {
-    super.initState();
-    gettingUserData();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   gettingUserData();
+  // }
 
   // string manipulation
   String getId(String res) {
@@ -39,26 +39,26 @@ class _HomeChatPageState extends State<HomeChatPage> {
     return res.substring(res.indexOf("_") + 1);
   }
 
-  gettingUserData() async {
-    await HelperFunctions.getUserEmailFromSF().then((value) {
-      setState(() {
-        email = value!;
-      });
-    });
-    await HelperFunctions.getUserNameFromSF().then((val) {
-      setState(() {
-        userName = val!;
-      });
-    });
-    // getting the list of snapshots in our stream
-    await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getUserGroups()
-        .then((snapshot) {
-      setState(() {
-        groups = snapshot;
-      });
-    });
-  }
+  // gettingUserData() async {
+  //   await HelperFunctions.getUserEmailFromSF().then((value) {
+  //     setState(() {
+  //       email = value!;
+  //     });
+  //   });
+  //   await HelperFunctions.getUserNameFromSF().then((val) {
+  //     setState(() {
+  //       userName = val!;
+  //     });
+  //   });
+  //   // getting the list of snapshots in our stream
+  //   await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+  //       .getUserGroups()
+  //       .then((snapshot) {
+  //     setState(() {
+  //       groups = snapshot;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

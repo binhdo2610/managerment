@@ -1,12 +1,16 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/profile/components/profile_menu.dart';
 import 'package:managerment/profile/components/profile_pic.dart';
 import 'package:managerment/profile/update_profile_screen.dart';
 import 'package:managerment/theme/app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String id;
+  const ProfileScreen({super.key, required this.id});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -25,6 +29,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return true; // Allow closing the bottom sheet
     }
   }
+
+Future fetchgetuserid() async {
+  String userid = '99776b4e-1deb-45e0-a633-7499bdd6555b'; 
+  var url = '${BaseAPI.FLUTTER_API_URL}/api/User/$userid';
+ final response = await Dio().get(
+      url,
+      options: Options(
+          headers: {'Authorization': 'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6Ijk5Nzc2YjRlLTFkZWItNDVlMC1hNjMzLTc0OTliZGQ2NTU1YiIsIkVtYWlsIjoiczM0MjMzNDMyZ0BnbWFpbC5jb20iLCJVc2VybmFtZSI6InN0cmluZyBzdHJpbmciLCJleHAiOjIwMzYzMzM2Mjd9.90noiX67ZDN47kYDoH3QrWOKol1Gypsgx-vKzsnp_5Q'},
+           ),
+    );
+      if (response.statusCode == 200) {
+        print('User updated successfully');
+    } else {
+     print('Failed to update user: ${response.statusCode}');
+        print('Response data: ${response.data}');
+      return []; 
+      }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +133,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildEditProfileContent() {
-    return const UpdateProfileScreen();
+    return UpdateProfileScreen(id: widget.id);
   }
 }

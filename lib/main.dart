@@ -44,19 +44,20 @@ class _MyAppState extends State<MyApp> {
   void initState() {
    
     super.initState();
-    // getUserLoggedInStatus();
-  }
+   getUserLoggedInStatus();
+   }
 
-  // getUserLoggedInStatus() async {
-  //   await HelperFunctions.getUserLoggedInStatus().then((value) {
-  //     if (value != null) {
-  //       setState(() {
-  //         _isSignedIn = value;
-  //       });
-  //     }
-  //   });
-  // }
+   getUserLoggedInStatus() async {
+      await HelperFunctions.getUserLoggedInStatus().then((value) {
+       if (value != null) {
+          setState(() {
+            _isSignedIn = value;
+         });
+       }
+      });
+    } 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

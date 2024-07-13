@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                       builder: (context) {
                         return FractionallySizedBox(
                           heightFactor: 0.9,
-                          child: ProfileScreen(),
+                          child: ProfileScreen(id: '99776b4e-1deb-45e0-a633-7499bdd6555b',),
                         );
                       },
                     );

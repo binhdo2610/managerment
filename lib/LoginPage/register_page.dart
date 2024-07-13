@@ -94,7 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               return "Name cannot be empty";
                             }
                           },
-                        ),TextFormField(
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "First Name",
                               prefixIcon: Icon(
