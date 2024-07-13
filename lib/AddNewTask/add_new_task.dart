@@ -353,7 +353,6 @@ class _MyWidgetState extends State<AddNewTask> {
       title: title,
       description: description,
       expiredAt: expiredAt,
-       fix_branch
       context: context,
     );
   }
