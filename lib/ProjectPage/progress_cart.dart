@@ -5,10 +5,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/theme/app_theme.dart';
 
 class ProgressCart extends StatelessWidget {
+  final Map item;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  final VoidCallback onRefresh;
   ProgressCart(
-      {Key? key})
+      {Key? key,
+      required this.item,
+      required this.onEdit,
+      required this.onDelete,
+      required this.onRefresh})
       : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +33,12 @@ class ProgressCart extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              height: 70,
+              height: 100,
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  color: Get.isDarkMode?ThemeColor.dark1:ThemeColor.background,
-                   borderRadius: BorderRadius.circular(10)),
+                  color:
+                      Get.isDarkMode ? ThemeColor.dark1 : ThemeColor.background,
+                  borderRadius: BorderRadius.circular(10)),
               child: Row(
                 children: [
                   Container(
@@ -47,33 +55,69 @@ class ProgressCart extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'a',
-                        style: GoogleFonts.poppins(
-                          color: Get.isDarkMode?ThemeColor.background:ThemeColor.dark2,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          item['title'],
+                          style: GoogleFonts.poppins(
+                            color: Get.isDarkMode
+                                ? ThemeColor.background
+                                : ThemeColor.dark2,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "2 days ago",
-                        style: GoogleFonts.poppins(
-                          color: Get.isDarkMode?ThemeColor.background:ThemeColor.dark2,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
+                        Text(
+                          item['description'],
+                          style: GoogleFonts.poppins(
+                            color: Get.isDarkMode
+                                ? ThemeColor.background
+                                : ThemeColor.dark2,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      )
-                    ],
+                        Text(
+                          item['expiredAt'],
+                          style: GoogleFonts.poppins(
+                            color: Get.isDarkMode
+                                ? ThemeColor.background
+                                : ThemeColor.dark2,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  Expanded(child: Container()),
-                  Icon(
-                    CupertinoIcons.ellipsis_vertical_circle,
-                    color: Colors.grey,
-                  )
+                  Expanded(
+                    child: Container(),
+                  ),
+                  PopupMenuButton(
+                    onSelected: (value){
+                      if(value == 'edit')
+                      {
+                        onEdit();
+                      }
+                      else if(value == 'delete'){
+                        onDelete();
+                      }
+                    },
+                    itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        child: Text("Edit"),
+                        value: 'edit'
+                      ),
+                      PopupMenuItem(
+                        child: Text("Delete"),
+                        value: 'delete',
+                      )
+                    ];
+                  })
                 ],
               ),
             ),

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:managerment/KanbanBoard/kanban_board.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/theme/app_theme.dart';
 

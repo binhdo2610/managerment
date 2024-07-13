@@ -1,16 +1,10 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/AddNewTask/add_new_task.dart';
 import 'package:managerment/ProjectPage/progress_cart.dart';
-import 'package:managerment/TaskPage/task_page.dart';
-import 'package:managerment/api_services/base_api.dart';
-import 'package:managerment/model/task_model.dart';
-import 'package:managerment/shared/constants.dart';
-import 'package:managerment/theme/app_theme.dart'; // Import TaskPage
+import 'package:managerment/api_services/task_service.dart';
+import 'package:managerment/theme/app_theme.dart';
 
 class ProjectDetail extends StatefulWidget {
   final String projectId;
@@ -21,12 +15,13 @@ class ProjectDetail extends StatefulWidget {
 }
 
 class _ProjectDetail extends State<ProjectDetail> {
+  bool isLoading = true;
   List items = [];
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //FetchTodo();
+    _fetchTodo();
   }
 
   @override
@@ -48,10 +43,6 @@ class _ProjectDetail extends State<ProjectDetail> {
               margin: EdgeInsets.all(16),
               child: Column(
                 children: [
-                  // Container(
-                  //   height: 100,
-                  //   child: ProgressCart(projectName: 'a', completedPercent: 1),
-                  //   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -107,36 +98,55 @@ class _ProjectDetail extends State<ProjectDetail> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 40,
             ),
-            // SingleChildScrollView(
-            //   child: Container(
-            //     height: double.maxFinite,
-            //     width: double.maxFinite,
-            //     child: ListView.builder(itemBuilder: (context, index) {
-            //       return ListTile(
-            //         title: Text('Sample'),
-            //       );
-            //     }),
-            //   ),
-            // ),
+            isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    child: Container(
+                      height: 550,
+                      width: double.maxFinite,
+                      child: ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final item = items[index];
+                          return ProgressCart(
+                            item: item,
+                            onEdit: () {},
+                            onDelete: () => _deleteTodoById(item['id']),
+                            onRefresh: () {},
+                          );
+                        },
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),
     );
   }
 
-  // Future<void> FetchTodo() async {
-  //   // final projectId = widget.projectId;
-  //   var url = '${BaseAPI.FLUTTER_API_URL}/api/Todolists';
-  //   final response = await Dio()
-  //       .get(url, options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN));
-  //   if (response.statusCode == 200) {
-  //     final json = jsonDecode(response.data.toString()) as List;
-  //     final result = json;
-  //     setState(() {
-  //       items = result;
-  //     });
-  //   }
-  // }
+  Future<void> _fetchTodo() async {
+    String projectId = widget.projectId;
+    final fetchedItems = await TaskService.FetchTodo(
+      projectId: projectId,
+      context: context,
+    );
+    setState(() {
+      items = fetchedItems;
+      isLoading = false;
+    });
+  }
+
+  Future<void> _deleteTodoById(String id) async {
+    final isSuccess = await TaskService.deleteTodoById(id, context);
+    if (isSuccess) {
+      final filtered = items.where((element) => element['id'] != id).toList();
+      setState(() {
+        items = filtered;
+      });
+    }
+  }
 }

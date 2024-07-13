@@ -4,6 +4,7 @@ import '../api_services/auth_service.dart';
 import '../widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
   String userName;
   String email;

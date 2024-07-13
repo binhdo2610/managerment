@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/api_services/message_service.dart';
 
-class AddProject {
+class ProjectService {
   static Future<bool> SubmitProject(String title, BuildContext context) async {
     var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/';
     final body = {
@@ -17,9 +17,9 @@ class AddProject {
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
     if (response.statusCode == 200) {
-      MessageService.ShowSuccessMessage("Created successfully", context);
+      MessageService.ShowMessage("Created successfully", context);
     } else {
-      MessageService.ShowErrorMessage("Failed to create", context);
+      MessageService.ShowMessage("Failed to create", context);
     }
     return true;
   }
@@ -54,12 +54,12 @@ class AddProject {
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
     if (response.statusCode == 204) {
-      MessageService.ShowSuccessMessage("Delete successfully", context);
-      return true;
+      MessageService.ShowMessage("Delete successfully", context);
     } else {
-      MessageService.ShowErrorMessage("Delete failed", context);
-      return false;
+      MessageService.ShowMessage("Delete failed", context);
+
     }
+    return true;
   }
 
   static Future<bool> updateProject(
@@ -74,11 +74,10 @@ class AddProject {
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
     if (response.statusCode == 200) {
-      MessageService.ShowSuccessMessage("Update successfully", context);
-      return true;
+      MessageService.ShowMessage("Update successfully", context);
     } else {
-      MessageService.ShowErrorMessage("Update failed", context);
-      return false;
+      MessageService.ShowMessage("Update failed", context);
     }
+    return true;
   }
 }

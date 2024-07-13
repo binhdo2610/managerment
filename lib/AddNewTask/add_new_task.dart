@@ -1,17 +1,8 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
-import 'package:managerment/api_services/base_api.dart';
-import 'package:managerment/api_services/project_service.dart';
 import 'package:managerment/api_services/task_service.dart';
-import 'package:managerment/model/project_model.dart';
-import 'package:managerment/model/task_model.dart';
 import 'package:managerment/theme/app_theme.dart';
 
 class AddNewTask extends StatefulWidget {
@@ -138,7 +129,9 @@ class _MyWidgetState extends State<AddNewTask> {
                               fontSize: 22,
                               fontWeight: FontWeight.bold),
                         ),
+                        // ignore: body_might_complete_normally_nullable
                         validator: (value){
+                          // ignore: unnecessary_null_comparison
                           if(titleController.value == null || titleController.value.text.isEmpty)
                           return 'This field is required';
                         },
@@ -294,6 +287,7 @@ class _MyWidgetState extends State<AddNewTask> {
                                   fontSize: 18,
                                 ),
                               ),
+                              // ignore: body_might_complete_normally_nullable
                               validator: (value) {
                                 if (desController.value.text.isEmpty) {
                                   return 'Please enter a description';

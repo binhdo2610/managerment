@@ -3,11 +3,8 @@ import 'dart:convert';
 
 
 import 'package:dio/dio.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:managerment/utils/sharePreferenceUtils.dart';
 
-import '';
 import 'base_api.dart';
 class AuthApi{
    

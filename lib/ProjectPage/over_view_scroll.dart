@@ -91,7 +91,7 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
   }
 
   Future<void> _deleteById(String id) async {
-    final isSuccess = await AddProject.deleteById(id, context);
+    final isSuccess = await ProjectService.deleteById(id, context);
     if (isSuccess) {
       final filtered = items.where((element) => element['id'] != id).toList();
       setState(() {
@@ -101,7 +101,7 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
   }
 
   Future<void> _fetchProject() async {
-    final fetchedItems = await AddProject.FetchProject();
+    final fetchedItems = await ProjectService.FetchProject();
     setState(() {
       items = fetchedItems;
       isLoading = false;

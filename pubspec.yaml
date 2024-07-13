@@ -59,6 +59,7 @@ dependencies:
   country_flags: ^3.0.0
   jwt_decoder: ^2.0.1
   font_awesome_flutter: ^10.7.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
