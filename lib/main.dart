@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeColor.light,
       darkTheme: ThemeColor.dark,
       themeMode: ThemeService().theme,
-      home: HomePage(fullname: '',),
+      home: LoginPage(),
     );
   }
 }
