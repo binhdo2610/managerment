@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
               onGenerateRoute: (setting){
                 Widget page = ProjectPage(username: '');
                 if(setting.name == 'ProjectDetail'){
-                   page = HomePage(fullname: '',);
+                  page = ProjectDetail(projectId: '',);
                   return MaterialPageRoute(builder: (_) => page);
                 }
                 else{
@@ -77,6 +77,7 @@ class _HomePageState extends State<HomePage> {
                 width: 85,  // Increase the width
                 height: 85,  // Increase the height
                 child: FloatingActionButton(
+                  heroTag: 'unique',
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -88,11 +89,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                     );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-                    // );
-                  },
+},
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:managerment/KanbanBoard/kanban_board.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/theme/app_theme.dart';
 
@@ -74,7 +74,7 @@ class OverViewCard extends StatelessWidget {
                     onEdit();
                     onRefresh();
                   },
-                  child: Icon(Icons.edit),
+                  child: Icon(Icons.edit, color: Get.isDarkMode?ThemeColor.background:ThemeColor.background),
                 ),
                 SizedBox(width: 10),
                 GestureDetector(
@@ -82,7 +82,7 @@ class OverViewCard extends StatelessWidget {
                     onDelete();
                     onRefresh();
                   },
-                  child: Icon(Icons.delete),
+                  child: Icon(Icons.delete, color: Get.isDarkMode?ThemeColor.background:ThemeColor.background),
                 ),
               ],
             ),

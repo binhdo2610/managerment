@@ -38,7 +38,7 @@ class _GroupInfoState extends State<GroupInfo> {
   }
 
   String getName(String r) {
-    return r.substring(r.indexOf("_") + 1);
+    return r.substring(r.indexOf("_") );
   }
 
   String getId(String res) {
@@ -84,7 +84,8 @@ class _GroupInfoState extends State<GroupInfo> {
                                       getName(widget.adminName),
                                       widget.groupName)
                                   .whenComplete(() {
-                                nextScreenReplace(context, const HomeChatPage());
+                                nextScreenReplace(
+                                    context, const HomeChatPage());
                               });
                             },
                             icon: const Icon(

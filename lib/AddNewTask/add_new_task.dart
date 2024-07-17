@@ -1,22 +1,16 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
-import 'package:managerment/api_services/base_api.dart';
-import 'package:managerment/api_services/project_service.dart';
+import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/api_services/task_service.dart';
-import 'package:managerment/model/project_model.dart';
-import 'package:managerment/model/task_model.dart';
 import 'package:managerment/theme/app_theme.dart';
 
 class AddNewTask extends StatefulWidget {
   final String projectId;
-  const AddNewTask({Key? key, required this.projectId}) : super(key: key);
+  final Map? todoList;
+  const AddNewTask({Key? key, required this.projectId, this.todoList})
+      : super(key: key);
 
   @override
   State<AddNewTask> createState() => _MyWidgetState();
@@ -24,6 +18,7 @@ class AddNewTask extends StatefulWidget {
 
 class _MyWidgetState extends State<AddNewTask> {
   final _formKey = GlobalKey<FormState>();
+  bool isEdit = false;
   late TextEditingController titleController;
   late TextEditingController desController;
   late TextEditingController dateController;
@@ -34,15 +29,27 @@ class _MyWidgetState extends State<AddNewTask> {
   @override
   void initState() {
     super.initState();
+    final todoList = widget.todoList;
     titleController = TextEditingController();
     desController = TextEditingController();
     dateController = TextEditingController(
-        text: '${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(this.SelectedDate)}');
+        text: '${DateFormat("yyyy-MM-dd").format(this.SelectedDate)}');
     startTime = TextEditingController(
         text: '${DateFormat.jm().format(DateTime.now())}');
     endTime = TextEditingController(
         text:
             '${DateFormat.jm().format(DateTime.now().add(Duration(hours: 1)))}');
+    if (todoList != null) {
+      isEdit = true;
+      final title = todoList['title'];
+      final description = todoList['description'];
+      final expiredAt = todoList['expiredAt'];
+      DateTime expiredDate = DateTime.parse(expiredAt);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(expiredDate);
+      titleController.text = title;
+      desController.text = description;
+      dateController.text = formattedDate;
+    }
   }
 
   _selectedDate(BuildContext context) async {
@@ -54,8 +61,7 @@ class _MyWidgetState extends State<AddNewTask> {
     if (selected != null && selected != SelectedDate) {
       setState(() {
         SelectedDate = selected;
-        dateController.text =
-            '${DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(selected)}';
+        dateController.text = '${DateFormat("yyyy-MM-dd").format(selected)}';
       });
     }
   }
@@ -104,7 +110,7 @@ class _MyWidgetState extends State<AddNewTask> {
                             width: 70,
                           ),
                           Text(
-                            'Add New Task',
+                            isEdit ? 'Edit Task' : 'Add New Task',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.montserrat(
                               color: Colors.white,
@@ -138,9 +144,12 @@ class _MyWidgetState extends State<AddNewTask> {
                               fontSize: 22,
                               fontWeight: FontWeight.bold),
                         ),
-                        validator: (value){
-                          if(titleController.value == null || titleController.value.text.isEmpty)
-                          return 'This field is required';
+                        // ignore: body_might_complete_normally_nullable
+                        validator: (value) {
+                          // ignore: unnecessary_null_comparison
+                          if (titleController.value == null ||
+                              titleController.value.text.isEmpty)
+                            return 'This field is required';
                         },
                       ),
                     ),
@@ -200,7 +209,8 @@ class _MyWidgetState extends State<AddNewTask> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
                                   child: TextField(
                                     readOnly: true,
                                     controller: startTime,
@@ -233,83 +243,95 @@ class _MyWidgetState extends State<AddNewTask> {
                                   ),
                                 ),
                                 Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    child: TextField(
-                                      readOnly: true,
-                                      controller: endTime,
-                                      decoration: InputDecoration(
-                                        labelText: 'End Time',
-                                        suffixIcon: GestureDetector(
-                                          onTap: () {
-                                            _selectedTime(context, "EndTime");
-                                          },
-                                          child: Icon(
-                                            CupertinoIcons.alarm,
-                                            size: 30,
-                                            color: ThemeColor.dark1,
-                                          ),
-                                        ),
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.black45),
-                                        ),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.black45),
-                                        ),
-                                        fillColor: Colors.black45,
-                                        labelStyle: GoogleFonts.poppins(
-                                          color: Colors.black87,
-                                          fontSize: 22,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  child: TextField(
+                                    readOnly: true,
+                                    controller: endTime,
+                                    decoration: InputDecoration(
+                                      labelText: 'End Time',
+                                      suffixIcon: GestureDetector(
+                                        onTap: () {
+                                          _selectedTime(context, "EndTime");
+                                        },
+                                        child: Icon(
+                                          CupertinoIcons.alarm,
+                                          size: 30,
+                                          color: ThemeColor.dark1,
                                         ),
                                       ),
-                                    ),),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black45),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black45),
+                                      ),
+                                      fillColor: Colors.black45,
+                                      labelStyle: GoogleFonts.poppins(
+                                        color: Colors.black87,
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 20),
                             child: TextFormField(
-                              controller: desController,
-                              keyboardType: TextInputType.multiline,
-                              minLines: 1,
-                              maxLines: 3,
-                              cursorColor: Colors.black45,
-                              style: GoogleFonts.poppins(
-                                color: ThemeColor.dark1,
-                                fontSize: 18,
-                              ),
-                              decoration: InputDecoration(
-                                labelText: "Description",
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: ThemeColor.dark3),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: ThemeColor.dark3),
-                                ),
-                                fillColor: Colors.black45,
-                                labelStyle: GoogleFonts.poppins(
-                                  color: ThemeColor.dark2,
+                                controller: desController,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
+                                cursorColor: Colors.black45,
+                                style: GoogleFonts.poppins(
+                                  color: ThemeColor.dark1,
                                   fontSize: 18,
                                 ),
-                              ),
-                              validator: (value) {
-                                if (desController.value.text.isEmpty) {
-                                  return 'Please enter a description';
-                                }
-                              }
-                            ),
+                                decoration: InputDecoration(
+                                  labelText: "Description",
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: ThemeColor.dark3),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: ThemeColor.dark3),
+                                  ),
+                                  fillColor: Colors.black45,
+                                  labelStyle: GoogleFonts.poppins(
+                                    color: ThemeColor.dark2,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                // ignore: body_might_complete_normally_nullable
+                                validator: (value) {
+                                  if (desController.value.text.isEmpty) {
+                                    return 'Please enter a description';
+                                  }
+                                }),
                           ),
                           SizedBox(
                             height: 250,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              if(_formKey.currentState?.validate()?? false){
-                                
+                            onTap: () async {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                var result = isEdit
+                                    ? await UpdateData()
+                                    : await _submitTask();
+                                if (result) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ProjectDetail(
+                                                projectId: widget.projectId,
+                                              )));
                                 }
-                                _submitTask();  
+                              }
                             },
                             child: Container(
                               height: 70,
@@ -320,11 +342,11 @@ class _MyWidgetState extends State<AddNewTask> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Create task",
+                                  isEdit ? 'Update Task' : "Create task",
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 25,
-                                    fontWeight: FontWeight.bold, 
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
@@ -342,7 +364,8 @@ class _MyWidgetState extends State<AddNewTask> {
       ),
     );
   }
- Future<void> _submitTask() async {
+
+  Future<bool> _submitTask() async {
     String title = titleController.text;
     String description = desController.text;
     String expiredAt = dateController.text;
@@ -350,6 +373,25 @@ class _MyWidgetState extends State<AddNewTask> {
 
     await TaskService.SubmitTask(
       projectId: projectId,
+      title: title,
+      description: description,
+      expiredAt: expiredAt,
+      context: context,
+    );
+    return true;
+  }
+
+  Future<bool> UpdateData() async {
+    final todoList = widget.todoList;
+    if (todoList == null) {
+      return false;
+    }
+    final id = todoList['id'];
+    String title = titleController.text;
+    String description = desController.text;
+    String expiredAt = dateController.text;
+    return await TaskService.updateTodoList(
+      id: id,
       title: title,
       description: description,
       expiredAt: expiredAt,
