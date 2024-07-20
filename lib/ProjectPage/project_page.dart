@@ -1,19 +1,15 @@
 
-import 'dart:convert';
 
 import 'package:country_flags/country_flags.dart';
-import 'package:dio/dio.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_scroll.dart';
-import 'package:managerment/ProjectPage/progress_cart.dart';
-import 'package:managerment/ProjectPage/project_detail.dart';
-import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/theme/app_theme.dart';
 import 'package:managerment/theme/theme_service.dart';
 
@@ -255,23 +251,7 @@ class _ProjectPageState extends State<ProjectPage> {
                   padding: const EdgeInsets.only(left: 20, top: 20),
                   child: OverViewScroll(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Project",
-
-                        style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //  
               ],
             ),
          
@@ -280,21 +260,4 @@ class _ProjectPageState extends State<ProjectPage> {
       ),
     );
   }
-  // Future<void> _fetchTodo() async {
-  //   final fetchedItems = await AddProject.FetchTodo();
-  //   setState(() {
-  //     items = fetchedItems;
-  //     isLoading = false;
-  //   });
-  // }
-  // void navigateToAddProject() {
-  //   final route = MaterialPageRoute(
-  //     builder: (context) => AddProjectScreen(),
-  //   );
-  //   Navigator.push(context, route).then((result) {
-  //     if (result == true) {
-  //       _fetchTodo();
-  //     }
-  //   });
-  // }
 }

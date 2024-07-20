@@ -3,16 +3,13 @@ import 'dart:convert';
 
 
 import 'package:dio/dio.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:managerment/utils/sharePreferenceUtils.dart';
 
-import '';
 import 'base_api.dart';
 class AuthApi{
    
   final shaedpref = SharedPrefs.instance;
-  Future<bool> signupAPI(
+  Future<String> signupAPI(
       String email,String username,String lastname, String firstname, String password) async {
     var url = '${BaseAPI.FLUTTER_API_URL}' + '/register';
 
@@ -32,7 +29,7 @@ class AuthApi{
     );
 
     if (response.statusCode == 200) {  
-        return true;
+      return response.data;
     } else {
       throw Exception('failed Register');
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_card.dart';
 import 'package:managerment/api_services/project_service.dart';
+import 'package:managerment/theme/app_theme.dart';
 
 class OverViewScroll extends StatefulWidget {
   const OverViewScroll({Key? key}) : super(key: key);
@@ -38,14 +39,16 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
         children: [
           TabBar(
             controller: tabController,
-            labelColor: Colors.black,
+            labelColor: ThemeColor.dark1,
             isScrollable: true,
             indicator: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
+              color: ThemeColor.background,
+              
             ),
-            padding: EdgeInsets.all(0),
-            unselectedLabelColor: Colors.grey.shade400,
+            padding: EdgeInsets.all(10),
+            unselectedLabelColor: ThemeColor.grey200,
+            indicatorSize:  TabBarIndicatorSize.label,
             tabs: [
               Tab(
                 text: "My Project",
@@ -91,7 +94,7 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
   }
 
   Future<void> _deleteById(String id) async {
-    final isSuccess = await AddProject.deleteById(id, context);
+    final isSuccess = await ProjectService.deleteById(id, context);
     if (isSuccess) {
       final filtered = items.where((element) => element['id'] != id).toList();
       setState(() {
@@ -101,7 +104,7 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
   }
 
   Future<void> _fetchProject() async {
-    final fetchedItems = await AddProject.FetchProject();
+    final fetchedItems = await ProjectService.FetchProject();
     setState(() {
       items = fetchedItems;
       isLoading = false;

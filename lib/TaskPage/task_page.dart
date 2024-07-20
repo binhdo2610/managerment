@@ -51,21 +51,6 @@ class _TaskPageState extends State<TaskPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context, MaterialPageRoute(builder: (context)=> ProjectPage(username: '')));
-                          },
-                          child: Icon(
-                            CupertinoIcons.arrow_left_square,
-                            color: Get.isDarkMode?ThemeColor.background:ThemeColor.dark1,
-                            size: 40,
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(
                       height: 25,
                     ),

@@ -4,19 +4,20 @@ import 'package:managerment/ChatPage/chat_page.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/ProjectPage/project_page.dart';
 import 'package:managerment/TaskPage/task_page.dart';
+import 'package:managerment/api_services/decode_jwt.dart';
 import 'package:managerment/model/task_model.dart';
 import 'package:managerment/profile/profile_screen.dart';
 import 'ChatPage/home_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String fullname;
-  const HomePage({Key? key, required this.fullname}) : super(key: key);
+  final String token;  
+  const HomePage({Key? key, required this.token}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
+  
   int _selectedIndex = 0;
 
   void _onIndexChange(int index) {
@@ -27,6 +28,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    decodeJwt _decode = decodeJwt();
+    String fullname =  _decode.getUsername(token: widget.token);
+    String userid = _decode.getId(token: widget.token);
+    
+  
     bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     
     return Scaffold(
@@ -38,12 +44,12 @@ class _HomePageState extends State<HomePage> {
               onGenerateRoute: (setting){
                 Widget page = ProjectPage(username: '');
                 if(setting.name == 'ProjectDetail'){
-                   page = HomePage(fullname: '',);
+                  page = ProjectDetail(projectId: '',);
                   return MaterialPageRoute(builder: (_) => page);
                 }
                 else{
                   return MaterialPageRoute(
-                  builder: (context) => ProjectPage(username: widget.fullname));
+                  builder: (context) => ProjectPage(username: fullname));
                 }
               },
             ),
@@ -77,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                 width: 85,  // Increase the width
                 height: 85,  // Increase the height
                 child: FloatingActionButton(
+                  heroTag: 'unique',
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -84,15 +91,11 @@ class _HomePageState extends State<HomePage> {
                       builder: (context) {
                         return FractionallySizedBox(
                           heightFactor: 0.9,
-                          child: ProfileScreen(),
+                          child: ProfileScreen(userid: userid,),
                         );
                       },
                     );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-                    // );
-                  },
+},
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
