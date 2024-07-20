@@ -10,12 +10,12 @@ import 'ChatPage/home_page.dart';
 
 class HomePage extends StatefulWidget {
   final String fullname;
+  
   const HomePage({Key? key, required this.fullname}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                       builder: (context) {
                         return FractionallySizedBox(
                           heightFactor: 0.9,
-                          child: ProfileScreen(),
+                          child: ProfileScreen(userid: '99776b4e-1deb-45e0-a633-7499bdd6555b'),
                         );
                       },
                     );

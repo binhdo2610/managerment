@@ -6,11 +6,12 @@ import 'package:managerment/api_services/base_api.dart';
 import 'dart:convert';
 import 'package:managerment/profile/components/profile_pic.dart';
 import 'package:managerment/theme/app_theme.dart';
-// Assuming this is where BaseAPI.FLUTTER_API_URL is defined
+
 
 class UpdateProfileScreen extends StatefulWidget {
-  final String id;
-   UpdateProfileScreen({Key? key, required this.id}) : super(key: key);
+  final String userid;
+  final Function(String, String) onSave;
+  UpdateProfileScreen({Key? key, required this.userid, required this.onSave}) : super(key: key);
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -25,22 +26,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Color _firstnameTFcolor = _unSelectedColor;
   Color _passwordColor = _unSelectedColor;
   Color _lastnameTFcolor = _unSelectedColor;
-  Color _phoneTFcolor = _unSelectedColor;
-
 
   final FocusNode _emailTFFocusNode = FocusNode();
   final FocusNode _usernameTFFocusNode = FocusNode();
   final FocusNode _passwordTFFocusNode = FocusNode();
   final FocusNode _firstnameTFFocusNode = FocusNode();
   final FocusNode _lastnameTFFocusNode = FocusNode();
-  final FocusNode _phoneTFFocusNode = FocusNode();
 
   final TextEditingController _firstnameTFController = TextEditingController();
   final TextEditingController _usernameTFController = TextEditingController();
   final TextEditingController _emailTFController = TextEditingController();
   final TextEditingController _passwordTFController = TextEditingController();
   final TextEditingController _lastnameTFController = TextEditingController();
-  final TextEditingController _phoneTFController = TextEditingController();
 
   @override
   void initState() {
@@ -50,7 +47,37 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _firstnameTFFocusNode.addListener(_onFirstnameTFFocusChange);
     _usernameTFFocusNode.addListener(_onUsernameTFFocusChange);
     _lastnameTFFocusNode.addListener(_onLastnameTFFocusChange);
-    _phoneTFFocusNode.addListener(_onPhoneTFFocusChange);
+
+    // Fetch user data
+    fetchUserData(widget.userid);
+  }
+
+  Future<void> fetchUserData(String userid) async {
+    var url = '${BaseAPI.FLUTTER_API_URL}/api/User/$userid';
+    try {
+      final response = await Dio().get(
+        url,
+        options: Options(
+          headers: BaseAPI.FLUTTER_ACCESS_TOKEN,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        setState(() {
+          _emailTFController.text = data['email'];
+          _usernameTFController.text = data['username'];
+          _firstnameTFController.text = data['firstname'];
+          _lastnameTFController.text = data['lastname'];
+          // Assuming password is not sent for security reasons
+          // _passwordTFController.text = data['password'];
+        });
+      } else {
+        print('Failed to load user data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
   }
 
   void _onEmailTFFocusChange() {
@@ -83,17 +110,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     });
   }
 
-  void _onPhoneTFFocusChange() {
-    setState(() {
-      _phoneTFcolor = _phoneTFFocusNode.hasFocus ? _selectedColor : _unSelectedColor;
-    });
-  }
-
   @override
   void dispose() {
     _emailTFFocusNode.removeListener(_onEmailTFFocusChange);
     _emailTFFocusNode.dispose();
-    _usernameTFFocusNode.removeListener(_onEmailTFFocusChange);
+    _usernameTFFocusNode.removeListener(_onUsernameTFFocusChange);
     _usernameTFFocusNode.dispose();
     _passwordTFFocusNode.removeListener(_onPasswordTFFocusChange);
     _passwordTFFocusNode.dispose();
@@ -101,140 +122,60 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _firstnameTFFocusNode.dispose();
     _lastnameTFFocusNode.removeListener(_onLastnameTFFocusChange);
     _lastnameTFFocusNode.dispose();
-    _phoneTFFocusNode.removeListener(_onPhoneTFFocusChange);
-    _phoneTFFocusNode.dispose();
+
     super.dispose();
   }
 
   Future<void> updateUser(String id) async {
-    final url = '${BaseAPI.FLUTTER_API_URL}/api/User/{id}';
-    
+    final url = '${BaseAPI.FLUTTER_API_URL}/api/User/$id';
     final body = json.encode({
       'email': _emailTFController.text,
       'username': _usernameTFController.text,
       'firstname': _firstnameTFController.text,
       'lastname': _lastnameTFController.text,
       'password': _passwordTFController.text,
-      'phone': _phoneTFController.text, // if you want to include phone number
     });
 
     try {
       final response = await Dio().put(
         url,
-      options:Options(
-        headers:{'Authorization': 'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6Ijk5Nzc2YjRlLTFkZWItNDVlMC1hNjMzLTc0OTliZGQ2NTU1YiIsIkVtYWlsIjoiczM0MjMzNDMyZ0BnbWFpbC5jb20iLCJVc2VybmFtZSI6InN0cmluZyBzdHJpbmciLCJleHAiOjIwMzYzMzM2Mjd9.90noiX67ZDN47kYDoH3QrWOKol1Gypsgx-vKzsnp_5Q'}), 
-      data: body);
+        options: Options(
+          headers: BaseAPI.FLUTTER_ACCESS_TOKEN,
+        ),
+        data: body,
+      );
+
       if (response.statusCode == 200) {
         print('User updated successfully');
-        // Re-display the entered values
-        setState(() {});
+        Get.snackbar(
+          'Thành công',
+          'Thông tin đã được cập nhật',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        // Gọi hàm onSave để cập nhật dữ liệu ở ProfileScreen
+        widget.onSave(_usernameTFController.text, _emailTFController.text);
       } else {
         print('Failed to update user: ${response.statusCode}');
+        Get.snackbar(
+          'Lỗi',
+          'Cập nhật không thành công',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+        );
       }
     } catch (e) {
       print('Error updating user: $e');
+      Get.snackbar(
+        'Lỗi',
+        'Có lỗi xảy ra khi cập nhật',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ProfilePic(),
-        const SizedBox(height: 25),
-        Form(
-          child: Column(
-            children: [
-              _buildTextField(
-                controller: _emailTFController,
-                focusNode: _emailTFFocusNode,
-                labelText: 'Email',
-                labelColor: _emailTFColor,
-              ),
-              const SizedBox(height: 15),
-              _buildTextField(
-                controller: _usernameTFController,
-                focusNode: _usernameTFFocusNode,
-                labelText: 'Username',
-                labelColor: _usernameTFColor,
-              ),
-              const SizedBox(height: 15),
-              _buildTextField(
-                controller: _passwordTFController,
-                focusNode: _passwordTFFocusNode,
-                labelText: 'Password',
-                labelColor: _passwordColor,
-                obscureText: true,
-              ),
-              const SizedBox(height: 15),
-              _buildTextField(
-                controller: _firstnameTFController,
-                focusNode: _firstnameTFFocusNode,
-                labelText: 'Firstname',
-                labelColor: _firstnameTFcolor,
-              ),
-              const SizedBox(height: 15),
-              _buildTextField(
-                controller: _lastnameTFController,
-                focusNode: _lastnameTFFocusNode,
-                labelText: 'Lastname',
-                labelColor: _lastnameTFcolor,
-              ),
-              const SizedBox(height: 15),
-              _buildTextField(
-                controller: _phoneTFController,
-                focusNode: _phoneTFFocusNode,
-                labelText: 'Phone',
-                labelColor: _phoneTFcolor,
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton(
-                  onPressed: () => updateUser(widget.id),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Get.isDarkMode ? ThemeColor.grey200 : ThemeColor.primaryLight2,
-                  ),
-                  child: Text(
-                    'Save',
-                    style: GoogleFonts.poppins(
-                      color: Get.isDarkMode ? ThemeColor.primaryLight1 : ThemeColor.background,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      text: 'Joined in 12 October 2023',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent.withOpacity(0.1),
-                      elevation: 0,
-                      foregroundColor: Colors.red,
-                      shape: const StadiumBorder(),
-                      side: BorderSide.none,
-                    ),
-                    child: Text('Delete', style: GoogleFonts.poppins()),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildTextField({
@@ -243,6 +184,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     required String labelText,
     required Color labelColor,
     bool obscureText = false,
+    String? errorText,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -250,19 +192,81 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         border: Border.all(color: Get.isDarkMode ? ThemeColor.primaryLight1 : ThemeColor.dark1),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        obscureText: obscureText,
-        onChanged: (value) {
-          setState(() {}); // This will trigger a rebuild to show the updated value
-        },
-        decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: GoogleFonts.poppins(color: labelColor),
-          border: InputBorder.none,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,  
+        children: [
+          TextField(
+            controller: controller,
+            focusNode: focusNode,
+            obscureText: obscureText,
+            onChanged: (value) {
+              setState(() {}); // This will trigger a rebuild to show the updated value
+            },
+            decoration: InputDecoration(
+              labelText: labelText,
+              labelStyle: GoogleFonts.poppins(color: labelColor),
+              border: InputBorder.none,
+              errorText: errorText,
+            ),
+          ),
+          if (errorText != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Text(
+                errorText,
+                style: TextStyle(color: Colors.red, fontSize: 12),
+              ),
+            ),
+        ],
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ProfilePic(),
+        SizedBox(height: 20,),
+        _buildTextField(
+          controller: _emailTFController,
+          focusNode: _emailTFFocusNode,
+          labelText : 'Email',
+          labelColor: _emailTFColor,
+        ),SizedBox(height: 20,),
+        _buildTextField(
+          controller: _usernameTFController,
+          focusNode: _usernameTFFocusNode,
+          labelText: 'Username',
+          labelColor: _usernameTFColor,
+        ),SizedBox(height: 20,),
+        _buildTextField(
+          controller: _passwordTFController,
+          focusNode: _passwordTFFocusNode,
+          labelText: 'Password',
+          labelColor: _passwordColor,
+          obscureText: true,
+        ),SizedBox(height: 20,),
+        _buildTextField(
+          controller: _firstnameTFController,
+          focusNode: _firstnameTFFocusNode,
+          labelText: 'First Name',
+          labelColor: _firstnameTFcolor,
+        ),SizedBox(height: 20,),
+        _buildTextField(
+          controller: _lastnameTFController,
+          focusNode: _lastnameTFFocusNode,
+          labelText: 'Last Name',
+          labelColor: _lastnameTFcolor,
+        ),SizedBox(height: 25,),
+        ElevatedButton(
+          onPressed: () {
+            updateUser(widget.userid);
+          },
+          child: Text('Save'),
+        ),
+      ],
+    );
+  }
 }
+

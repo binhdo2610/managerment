@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeColor.light,
       darkTheme: ThemeColor.dark,
       themeMode: ThemeService().theme,
-      home:KanbanBoard(),
+      home:LoginPage(),
     );
   }
 }
