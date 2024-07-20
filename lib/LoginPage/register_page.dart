@@ -253,7 +253,7 @@ class _RegisterPageState extends State<RegisterPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => HomePage(fullname: username)));
+                builder: (context) => HomePage(token: token,)));
       } else {
         setState(() {
           _isLoading = false;

@@ -166,12 +166,12 @@ class _LoginPageState extends State<LoginPage> {
       
       print(token);
 
-      String username = _decode.getUsername(token: token);
+     
       // ignore: unnecessary_null_comparison
       if(token != null){
 
          showSnackbar(context, const  Color(0xFFFF5600), "Đăng nhập thành công");
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(fullname: username)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(token: token)));
       }
       else { 
         setState(() {
