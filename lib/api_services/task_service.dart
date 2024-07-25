@@ -12,7 +12,7 @@ class TaskService{
     final body = {
       'title': title,
       'description': description,
-      'userId': '9b0ad4b5-16bb-4afb-8bcb-4c843fb34a2c',
+      // 'userId': '9b0ad4b5-16bb-4afb-8bcb-4c843fb34a2c',
       'expiredAt': expiredAt,
     };
     final response = await Dio().post(
@@ -65,12 +65,13 @@ class TaskService{
     return true;
   }
 
-   static Future<bool> updateProject(
+   static Future<bool> updateTodoList(
       {required String id,required String title,required String description,required String expiredAt, required BuildContext context,}) async {
     var url = '${BaseAPI.FLUTTER_API_URL}/api/Todolists/$id';
     final body = {
       'title': title,
       'description': description,
+      // 'userId': '9b0ad4b5-16bb-4afb-8bcb-4c843fb34a2c',
       'expiredAt': expiredAt,
     };
     final response = await Dio().put(
@@ -78,7 +79,7 @@ class TaskService{
       data: jsonEncode(body),
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 204) {
       MessageService.ShowMessage("Update successfully", context);
     } else {
       MessageService.ShowMessage("Update failed", context);

@@ -9,7 +9,7 @@ import 'base_api.dart';
 class AuthApi{
    
   final shaedpref = SharedPrefs.instance;
-  Future<bool> signupAPI(
+  Future<String> signupAPI(
       String email,String username,String lastname, String firstname, String password) async {
     var url = '${BaseAPI.FLUTTER_API_URL}' + '/register';
 
@@ -29,7 +29,7 @@ class AuthApi{
     );
 
     if (response.statusCode == 200) {  
-        return true;
+      return response.data;
     } else {
       throw Exception('failed Register');
     }

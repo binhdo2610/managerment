@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:managerment/KanbanBoard/kanban_board.dart';
 import 'package:managerment/LoginPage/login_page.dart';
 import 'package:managerment/api_services/helper_function.dart';
 import 'package:managerment/home_page.dart';
@@ -67,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeColor.light,
       darkTheme: ThemeColor.dark,
       themeMode: ThemeService().theme,
-      home: HomePage(fullname: '',),
+      home:LoginPage(),
     );
   }
 }

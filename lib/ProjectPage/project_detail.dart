@@ -114,9 +114,9 @@ class _ProjectDetail extends State<ProjectDetail> {
                           final item = items[index];
                           return ProgressCart(
                             item: item,
-                            onEdit: () {},
-                            onDelete: () => _deleteTodoById(item['id']),
-                            onRefresh: () {},
+                            onRefresh: _fetchTodo,
+                            onEdit: () => navigateToEditPage(item),
+                            onDelete: () => _deleteTodoById(item['id']),       
                           );
                         },
                       ),
@@ -148,5 +148,11 @@ class _ProjectDetail extends State<ProjectDetail> {
         items = filtered;
       });
     }
+  }
+  void navigateToEditPage(Map item) {
+    final route = MaterialPageRoute(
+      builder: (context) => AddNewTask(todoList: item, projectId: widget.projectId,),
+    );
+    Navigator.push(context, route).then((_) => _fetchTodo());
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:managerment/theme/app_theme.dart';
 
 class ProgressCart extends StatelessWidget {
@@ -19,6 +20,8 @@ class ProgressCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(item['expiredAt']));
+    String expiredAt = 'Expired At: $formattedDate';
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Row(
@@ -49,7 +52,7 @@ class ProgressCart extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                     child: Icon(
                       CupertinoIcons.doc_append,
-                      color: Colors.white,
+                      color: ThemeColor.background
                     ),
                   ),
                   SizedBox(
@@ -80,8 +83,9 @@ class ProgressCart extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+                        SizedBox(height: 5,),
                         Text(
-                          item['expiredAt'],
+                          expiredAt,
                           style: GoogleFonts.poppins(
                             color: Get.isDarkMode
                                 ? ThemeColor.background
@@ -100,9 +104,11 @@ class ProgressCart extends StatelessWidget {
                     onSelected: (value){
                       if(value == 'edit')
                       {
+                        onRefresh();
                         onEdit();
                       }
                       else if(value == 'delete'){
+                        onRefresh();
                         onDelete();
                       }
                     },

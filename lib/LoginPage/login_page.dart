@@ -2,6 +2,7 @@
 import 'package:managerment/api_services/auth_api.dart';
 import 'package:managerment/api_services/decode_jwt.dart';
 import 'package:managerment/home_page.dart';
+import 'package:managerment/utils/sharePreferenceUtils.dart';
 
 import '../api_services/helper_function.dart';
 import 'register_page.dart';
@@ -29,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   String password = "";
   late AuthApi _authApi = AuthApi();
   late decodeJwt _decode = decodeJwt();
+
   
   bool _isLoading = false;
   AuthService authService = AuthService();
@@ -159,12 +161,17 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = true;
       });
       var token = await _authApi.login(email: email, password: password);
-      String username = _decode.getUsername(token: token);
+      
+      await HelperFunctions.saveToken(token);
+      
+      print(token);
+
+     
       // ignore: unnecessary_null_comparison
       if(token != null){
 
          showSnackbar(context, const  Color(0xFFFF5600), "Đăng nhập thành công");
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(fullname: username)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(token: token)));
       }
       else { 
         setState(() {
@@ -186,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
           await HelperFunctions.saveUserNameSF(snapshot.docs[0]['fullName']);
-          nextScreenReplace(context ,HomePage(fullname: username,));
+          
         } else {
           print("ko truy cap dc user tren firebase ");
         }

@@ -251,23 +251,7 @@ class _ProjectPageState extends State<ProjectPage> {
                   padding: const EdgeInsets.only(left: 20, top: 20),
                   child: OverViewScroll(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Project",
-
-                        style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //  
               ],
             ),
          

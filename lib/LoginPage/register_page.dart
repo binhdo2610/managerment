@@ -5,13 +5,11 @@ import 'package:managerment/api_services/auth_service.dart';
 import 'package:managerment/api_services/helper_function.dart';
 import 'package:managerment/home_page.dart';
 
-
 import '../../widgets/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
-
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
@@ -25,30 +23,30 @@ class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
-  String firstname= "";
+  String firstname = "";
   String lastname = "";
- 
+
   AuthService authService = AuthService();
-  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-   
-  // }
-  // // gettingUserData() async {
-  // //   await HelperFunctions.getUserEmailFromSF().then((value) {
-  // //     setState(() {
-  // //       email = value!;
-  // //     });
-  // //   }); 
-  // //   await HelperFunctions.getUserNameFromSF().then((val) {
-  // //     setState(() {
-  // //       username = val!;
-  // //     });
-  // //   });
-   
+
+    // }
+    // // gettingUserData() async {
+    // //   await HelperFunctions.getUserEmailFromSF().then((value) {
+    // //     setState(() {
+    // //       email = value!;
+    // //     });
+    // //   });
+    // //   await HelperFunctions.getUserNameFromSF().then((val) {
+    // //     setState(() {
+    // //       username = val!;
+    // //     });
+    // //   });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,10 +74,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             "Create your account now to chat and explore",
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w400)),
-                                SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Image.asset("assets/logo.jpg"),
-                         SizedBox(height: 10,),
-                         TextFormField(
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "Username",
                               prefixIcon: Icon(
@@ -98,7 +100,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               return "Username cannot be empty";
                             }
                           },
-                        ), const SizedBox(height: 15),
+                        ),
+                        const SizedBox(height: 15),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "Last Name",
@@ -108,7 +111,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               )),
                           onChanged: (val) {
                             setState(() {
-
                               lastname = val;
                             });
                           },
@@ -120,8 +122,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                           },
                         ),
-                         const SizedBox(height: 15),
-                         TextFormField(
+                        const SizedBox(height: 15),
+                        TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "First Name",
                               prefixIcon: Icon(
@@ -152,11 +154,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Theme.of(context).primaryColor,
                               )),
                           onChanged: (val) {
-                            
                             setState(() {
                               email = val;
                             });
-                            
                           },
 
                           // check tha validation
@@ -178,8 +178,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Theme.of(context).primaryColor,
                               )),
                           validator: (val) {
-                            return RegExp(r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").hasMatch(val!) ? null :"Please enter a valid password";
-
+                            return RegExp(
+                                        r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")
+                                    .hasMatch(val!)
+                                ? null
+                                : "Please enter a valid password";
                           },
                           onChanged: (val) {
                             setState(() {
@@ -194,9 +197,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              
                                 elevation: 0,
-                                backgroundColor: Color.fromARGB(255, 130, 233, 251),
+                                backgroundColor:
+                                    Color.fromARGB(255, 130, 233, 251),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30))),
                             child: const Text(
@@ -240,18 +243,24 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         _isLoading = true;
       });
-      var status = await _authApi.signupAPI(email, username, lastname, firstname, password);
-      if(status){
+      var token = await _authApi.signupAPI(
+          email, username, lastname, firstname, password);
+      if (token != null) {
+        await HelperFunctions.saveToken(token);
+
+        print(token);
         showSnackbar(context, Colors.red, "Đăng kí thành công ");
-        Navigator.push(context,MaterialPageRoute(builder: (context)=>HomePage(fullname: username)));
-      }
-      else { 
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomePage(token: token,)));
+      } else {
         setState(() {
-          _isLoading = false ; 
+          _isLoading = false;
         });
         throw Exception("Đăng kí thất bại ");
       }
-      
+
       await authService
           .registerUserWithEmailandPassword(firstname, email, password)
           .then((value) async {
@@ -260,11 +269,8 @@ class _RegisterPageState extends State<RegisterPage> {
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
           await HelperFunctions.saveUserNameSF(firstname);
-          nextScreenReplace(context, HomePage(fullname:username ,));
-        } 
+        }
       });
     }
   }
-  
-  
 }
