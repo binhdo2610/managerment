@@ -6,7 +6,8 @@ import 'package:managerment/api_services/base_api.dart';
 import 'dart:convert';
 import 'package:managerment/profile/components/profile_pic.dart';
 import 'package:managerment/theme/app_theme.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// Assuming this is where BaseAPI.FLUTTER_API_URL is defined
 
 class UpdateProfileScreen extends StatefulWidget {
   final String userid;
@@ -168,14 +169,108 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       }
     } catch (e) {
       print('Error updating user: $e');
-      Get.snackbar(
-        'Lỗi',
-        'Có lỗi xảy ra khi cập nhật',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent,
-        colorText: Colors.white,
-      );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ProfilePic(),
+        const SizedBox(height: 25),
+        Form(
+          child: Column(
+            children: [
+              _buildTextField(
+                controller: _emailTFController,
+                focusNode: _emailTFFocusNode,
+                labelText: 'Email',
+                labelColor: _emailTFColor,
+              ),
+              const SizedBox(height: 15),
+              _buildTextField(
+                controller: _usernameTFController,
+                focusNode: _usernameTFFocusNode,
+                labelText: AppLocalizations.of(context)!.userName,
+                labelColor: _usernameTFColor,
+              ),
+              const SizedBox(height: 15),
+              _buildTextField(
+                controller: _passwordTFController,
+                focusNode: _passwordTFFocusNode,
+                labelText: AppLocalizations.of(context)!.password,
+                labelColor: _passwordColor,
+                obscureText: true,
+              ),
+              const SizedBox(height: 15),
+              _buildTextField(
+                controller: _firstnameTFController,
+                focusNode: _firstnameTFFocusNode,
+                labelText:  AppLocalizations.of(context)!.firstName,
+                labelColor: _firstnameTFcolor,
+              ),
+              const SizedBox(height: 15),
+              _buildTextField(
+                controller: _lastnameTFController,
+                focusNode: _lastnameTFFocusNode,
+                labelText: AppLocalizations.of(context)!.lastName,
+                labelColor: _lastnameTFcolor,
+              ),
+              const SizedBox(height: 15),
+              _buildTextField(
+                controller: _phoneTFController,
+                focusNode: _phoneTFFocusNode,
+                labelText: AppLocalizations.of(context)!.phone,
+                labelColor: _phoneTFcolor,
+              ),
+              const SizedBox(height: 30),
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () => updateUser(widget.id),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Get.isDarkMode ? ThemeColor.grey200 : ThemeColor.primaryLight2,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.save,
+                    style: GoogleFonts.poppins(
+                      color: Get.isDarkMode ? ThemeColor.primaryLight1 : ThemeColor.background,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: 'Joined in 12 October 2023',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent.withOpacity(0.1),
+                      elevation: 0,
+                      foregroundColor: Colors.red,
+                      shape: const StadiumBorder(),
+                      side: BorderSide.none,
+                    ),
+                    child: Text('Delete', style: GoogleFonts.poppins()),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildTextField({

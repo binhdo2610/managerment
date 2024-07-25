@@ -1,0 +1,117 @@
+{
+  "hello": "Hello, ",
+
+  "haveANiceDay": "Have a nice day!",
+
+  "createNewProject": "Create new Project",
+
+  "searchYourProjects": "Search your Projects",
+
+  "projectDetail": "Project Detail",
+
+  "addTask": "Add Task",
+
+  "myProject": "My Project",
+
+  "inProgress": "In Progress",
+
+  "completed": "Completed",
+
+  "editProject": "Edit Project",
+
+  "addProject": "Add Project",
+
+  "update" : "Update Project",
+
+  "create" : "Create Project",
+
+  "pleaseEnterATitle": "Please Enter A Title",
+
+  "title" : "Title",
+
+  "profile" : "Profile",
+
+  "userName" : "Username",
+
+  "editProfile" : "Edit Profile",
+
+  "notification" : "Notification",
+
+  "settings" : "Settings",
+
+  "logout" : "Logout",
+
+  "password" : "Password",
+
+  "firstName" : "First Name",
+
+  "lastName" : "Last Name",
+
+  "phone" : "Phone",
+
+  "save" : "Save",
+
+  "sendAMessage" : "Send A Message...",
+
+  "groupInfo" : "Group Info",
+
+  "exit": "Exit",
+
+  "areyousureexitthegroup" : "Are You Sure Exit The Group?",
+
+  "groupLabel": "Group: {groupName}",
+
+  "noMembers" : "NO MEMBERS",
+
+  "group": "Group",
+
+  "search" : "Search",
+
+  "searchGroup" : "Search Group",
+
+  "successJoinGroup" : "Success Join Group",
+
+  "leftGroup": "Left The Group {groupName}",
+
+  "joined": "Joined",
+
+  "joinNow" : "Join Now",
+
+  "editTask" : "Edit Task",
+
+  "addNewTask" : "Add New Task",
+
+  "date" : "Date",
+
+  "description" : "Description",
+
+  "pleaseEnterADescription": "Please Enter A Description",
+
+  "updateTask" : "Update Task",
+
+  "createTask": "Create Task",
+
+  "createSuccessfully": "Create Successfully",
+  
+  "failedToCreate" : "Failed to Create",
+
+  "updateSuccessfully" : "Update Successfully",
+
+  "failedToUpdate" : "Failed to Update",
+
+  "deleteSuccessfully" : "Delete Successfully",
+
+  "failedToDelete" : "Failed to Delete",
+
+  "expiredAt": "Expired At: {formattedDate}",
+
+  "changeSomethings" : "Change Somethings",
+  
+  "languages" : "Languages",
+
+  "english" : "English",
+
+  "vietnamese" : "Vietnamese",
+
+  "darkLight" : "Dark/Light"
+}

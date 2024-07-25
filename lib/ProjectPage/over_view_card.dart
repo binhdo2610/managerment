@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/theme/app_theme.dart';
-
 class OverViewCard extends StatelessWidget {
   final Map item;
   final VoidCallback onEdit;

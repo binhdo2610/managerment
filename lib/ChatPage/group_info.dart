@@ -1,9 +1,11 @@
-import '../ChatPage/home_page.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'home_page_chat.dart';
 import '../api_services/database_service.dart';
 import '../widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class GroupInfo extends StatefulWidget {
   final String groupId;
   final String groupName;
@@ -52,7 +54,7 @@ class _GroupInfoState extends State<GroupInfo> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text("Group Info"),
+        title:  Text(AppLocalizations.of(context)!.groupInfo, style: GoogleFonts.poppins(),),
         actions: [
           IconButton(
               onPressed: () {
@@ -61,9 +63,9 @@ class _GroupInfoState extends State<GroupInfo> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text("Exit"),
+                        title:  Text(AppLocalizations.of(context)!.exit, style: GoogleFonts.poppins(),),
                         content:
-                            const Text("Are you sure you exit the group? "),
+                             Text(AppLocalizations.of(context)!.areyousureexitthegroup, style: GoogleFonts.poppins(),),
                         actions: [
                           IconButton(
                             onPressed: () {
@@ -128,8 +130,8 @@ class _GroupInfoState extends State<GroupInfo> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Group: ${widget.groupName}",
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                        AppLocalizations.of(context)!.groupLabel(widget.groupName),
+                        style:  GoogleFonts.poppins(fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(
                         height: 5,
@@ -182,13 +184,13 @@ class _GroupInfoState extends State<GroupInfo> {
                 },
               );
             } else {
-              return const Center(
-                child: Text("NO MEMBERS"),
+              return  Center(
+                child: Text(AppLocalizations.of(context)!.noMembers, style: GoogleFonts.poppins(),),
               );
             }
           } else {
-            return const Center(
-              child: Text("NO MEMBERS"),
+            return  Center(
+              child: Text(AppLocalizations.of(context)!.noMembers, style: GoogleFonts.poppins()),
             );
           }
         } else {

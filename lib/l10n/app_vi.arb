@@ -1,0 +1,117 @@
+{
+  "hello": "Xin chào, ",
+
+  "haveANiceDay": "Chúc 1 ngày tốt lành!",
+
+  "createNewProject": "Tạo dự án mới",
+
+  "searchYourProjects": "Tìm dự án của bạn",
+
+  "projectDetail": "Chi Tiết Dự Án",
+
+  "addTask": "Thêm Công Việc",
+
+  "myProject": "Dự Án Của Tôi",
+
+  "inProgress": "Đang Tiến Hành",
+
+  "completed": "Hoàn Thành",
+
+  "editProject": "Chỉnh Sửa Dự Án",
+
+  "addProject": "Thêm Dự Án",
+
+  "update" : "Cập Nhật Dự Án",
+
+  "create" : "Tạo Dự Án",
+
+  "pleaseEnterATitle": "Hãy Nhập Tiêu Đề",
+
+  "title" : "Tiêu Đề",
+
+  "profile" : "Hồ Sơ",
+
+  "userName" : "Tên Người Dùng",
+
+  "editProfile" : "Chỉnh Sửa Hồ Sơ",
+
+  "notification" : "Thông Báo",
+
+  "settings" : "Cài Đặt",
+
+  "logout" : "Đăng Xuất",
+
+  "password" : "Mật Khẩu",
+
+  "firstName" : "Tên",
+
+  "lastName" : "Họ",
+
+  "phone" : "Số Điện Thoại",
+
+  "save" : "Lưu",
+
+  "sendAMessage" : "Gửi Tin Nhắn...",
+
+  "groupInfo" : "Thông Tin Nhóm",
+
+  "exit": "Thoát Ra",
+
+  "areyousureexitthegroup" : "Bạn Có Muốn Thoát Khỏi Group?",
+
+  "groupLabel": "Nhóm: {groupName}",
+
+  "noMembers": "KHÔNG CÓ THÀNH VIÊN",
+
+  "group" : "Nhóm",
+
+  "search" : "Tìm Kiếm",
+
+  "searchGroup" : "Tìm Kiếm Nhóm",
+
+  "successJoinGroup" : "Tham Gia Nhóm Thành Công",
+
+  "leftGroup": "Đã Rời Nhóm {groupName}",
+
+  "joined": "Đã Tham Gia",
+
+  "joinNow" : "Tham Gia Ngay",
+
+  "editTask" : "Chỉnh Sửa Công Việc",
+
+  "addNewTask" : "Thêm Công Việc Mới",
+
+  "date" : "Ngày Tháng",
+
+  "description" : "Mô Tả",
+
+  "pleaseEnterADescription": "Hãy Nhập Mô Tả",
+
+  "updateTask" : "Cập Nhật Công Việc",
+
+  "createTask": "Tạo Công Việc",
+
+  "createSuccessfully": "Tạo Thành Công",
+  
+  "failedToCreate" : "Tạo không thành công",
+
+  "updateSuccessfully" : "Cập Nhật Thành Công",
+
+  "failedToUpdate" : "Cập Nhật Không Thành Công",
+
+  "deleteSuccessfully" : "Xóa Thành Công",
+
+  "failedToDelete" : "Xóa Không Thành Công",
+
+  "expiredAt": "Hết Hạn Lúc: {formattedDate}",
+
+  "changeSomethings" : "Đổi 1 Vài Thứ",
+
+  "languages" : "Ngôn Ngữ",
+
+  "english" : "Tiếng Anh",
+
+  "vietnamese" : "Tiếng Việt",
+
+  "darkLight" : "Tối/Sáng"
+}

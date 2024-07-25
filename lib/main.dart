@@ -1,16 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:managerment/KanbanBoard/kanban_board.dart';
-import 'package:managerment/LoginPage/login_page.dart';
-import 'package:managerment/api_services/helper_function.dart';
+import 'package:managerment/Logic/Cubits/Language_cubits.dart';
 import 'package:managerment/home_page.dart';
 import 'package:managerment/shared/constants.dart';
 import 'package:managerment/theme/app_theme.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:managerment/theme/theme_service.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'utils/sharePreferenceUtils.dart';
 
 Future<void> main() async {
@@ -43,34 +43,41 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-   bool _isSignedIn = false;
+  bool _isSignedIn = false;
   @override
   void initState() {
-   
     super.initState();
     // getUserLoggedInStatus();
   }
 
-  // getUserLoggedInStatus() async {
-  //   await HelperFunctions.getUserLoggedInStatus().then((value) {
-  //     if (value != null) {
-  //       setState(() {
-  //         _isSignedIn = value;
-  //       });
-  //     }
-  //   });
-  // }
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeColor.light,
-      darkTheme: ThemeColor.dark,
-      themeMode: ThemeService().theme,
-      home:LoginPage(),
+    return BlocProvider(
+      create: (context) => LanguageCubits(context),
+      child: BlocBuilder<LanguageCubits, Locale?>(
+        builder: (context, locale) {
+          return GetMaterialApp(
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale('en'), // English
+              Locale('vi'), // Spanish
+            ],
+            locale: locale,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeColor.light,
+            darkTheme: ThemeColor.dark,
+            themeMode: ThemeService().theme,
+            home: HomePage(
+              fullname: '',
+            ),
+          );
+        },
+      ),
     );
   }
 }
-
-
