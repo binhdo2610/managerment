@@ -59,7 +59,7 @@ class _ForgotpassScreenState extends State<ForgotPassPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'images/title3.jpg',
+                  'assets/images/title3.jpg',
                   width: 400,
                   height: 170,
                 ),
@@ -67,7 +67,7 @@ class _ForgotpassScreenState extends State<ForgotPassPage> {
                   height: 14,
                 ),
                 Image.asset(
-                  'images/logo3.jpg',
+                  'assets/images/logo3.jpg',
                   width: 130,
                   height: 130,
                 ),
@@ -75,7 +75,7 @@ class _ForgotpassScreenState extends State<ForgotPassPage> {
                   height: 14,
                 ),
                 Image.asset(
-                  'images/forgotpass.jpg',
+                  'assets/images/forgotpass.jpg',
                   width: 150,
                   height: 25,
                 ),

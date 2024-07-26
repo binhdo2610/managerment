@@ -113,6 +113,7 @@ class _ProjectDetail extends State<ProjectDetail> {
                         itemBuilder: (context, index) {
                           final item = items[index];
                           return ProgressCart(
+                            projectId: widget.projectId,
                             item: item,
                             onRefresh: _fetchTodo,
                             onEdit: () => navigateToEditPage(item),

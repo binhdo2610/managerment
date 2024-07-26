@@ -42,7 +42,7 @@ dependencies:
   shared_preferences: ^2.2.3
   provider: ^6.1.2
   flutter_bloc: ^8.1.6
-  super_drag_and_drop: ^0.8.17
+  super_drag_and_drop: ^0.8.18
   drag_and_drop: ^1.0.0
   flutter_staggered_grid_view: ^0.7.0
   overlapping_panels: ^0.0.3
@@ -60,6 +60,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   font_awesome_flutter: ^10.7.0
   image_picker: ^1.1.2
+  drag_and_drop_lists: ^0.4.1
 
 dev_dependencies:
   flutter_test:

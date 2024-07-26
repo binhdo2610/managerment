@@ -1,8 +1,15 @@
 
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/LoginPage/forgot_password.dart';
 import 'package:managerment/api_services/auth_api.dart';
+import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/api_services/decode_jwt.dart';
 import 'package:managerment/home_page.dart';
-import 'package:managerment/utils/sharePreferenceUtils.dart';
+import 'package:managerment/theme/app_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../api_services/helper_function.dart';
 import 'register_page.dart';
@@ -16,6 +23,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  
   
 
   const LoginPage({Key? key}) : super(key: key);
@@ -35,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   AuthService authService = AuthService();
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     return Scaffold(
       body: _isLoading
           ? Center(
@@ -43,118 +51,178 @@ class _LoginPageState extends State<LoginPage> {
                   color: Theme.of(context).primaryColor),
             )
           : SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-                child: Form(
-                    key: formKey,
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    color: Theme.of(context).primaryColor, // Màu tím
+                    padding: const EdgeInsets.symmetric(vertical: 60),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset('assets/title.jpg', height: 200,width: 300,),
-                        const SizedBox(height: 20,),
-                        Image.asset("assets/logo.jpg", height: 100, width: 100,),
-                        const SizedBox(height: 20,),
-                        TextFormField(
-                          decoration: textInputDecoration.copyWith(
+                      children: [
+                        Image.asset(
+                          "assets/images/computer.jpg",
+                          height: 100,
+                          width: 100,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Sign in to your account',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Enter your email and password to login',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 400,
+                    color: Colors.white, // Màu trắng
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          TextFormField(
+                            decoration: InputDecoration(
                               labelText: "Email",
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: Colors.grey,
-                              )),
-                          onChanged: (val) {
-                            setState(() {
-                              email = val;
-                            });
-                          },
-
-                          // check tha validation
-                          validator: (val) {
-                            return RegExp(
-                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(val!)
-                                ? null
-                                : "Please enter a valid email";
-                          },
-                        ),
-                        const SizedBox(height: 15),
-                        TextFormField(
-                          obscureText: true,
-                          decoration: textInputDecoration.copyWith(
+                              prefixIcon: Icon(Icons.email),
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (val) {
+                              setState(() {
+                                email = val;
+                              });
+                            },
+                            validator: (val) {
+                              return RegExp(
+                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(val!)
+                                  ? null
+                                  : "Please enter a valid email";
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            obscureText: true,
+                            decoration: InputDecoration(
                               labelText: "Password",
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Theme.of(context).primaryColor,
-                              )),
-                          validator: (val) {
-                           return RegExp(r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$").hasMatch(val!) ? null :"Please enter a valid password";
-                          },
-                          onChanged: (val) {
-                            setState(() {
-                              password = val;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: FilledButton(
-                            style: FilledButton.styleFrom(                              
-                                backgroundColor: const Color.fromARGB(255, 130, 233, 251),
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30))),
+                              prefixIcon: Icon(Icons.lock),
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (val) {
+                              setState(() {
+                                password = val;
+                              });
+                            },
+                            validator: (val) {
+                              if (val!.length < 6) {
+                                return "Password must be at least 6 characters";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ThemeColor.secondaryLight1, // Màu nền
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
                             child: const Text(
-                              "Sign In",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                              "Log In",
+                              style: TextStyle(color: Colors.white, fontSize: 18),
                             ),
                             onPressed: () {
                               login();
                             },
                           ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Forgot password?',
-                    style: TextStyle(color: Color(0xFFFF5600)),
+                          const SizedBox(height: 10),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassPage()));
+                            },
+                            child: Text(
+                              'Forgot Password?',
+                              style: GoogleFonts.poppins(
+                                color: ThemeColor.secondaryLight1,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Divider(thickness: 1),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                "Or",
+                                style: GoogleFonts.poppins(fontSize: 14),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Divider(thickness: 1),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                        
+                          Center(
+                            child: Text.rich(
+                              TextSpan(
+                                text: "Don't have an account? ",
+                                style: GoogleFonts.poppins(
+                                  color: Theme.of(context).primaryColorDark,
+                                  fontSize: 15,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: "Register here",
+                                    style: GoogleFonts.poppins(
+                                      color: ThemeColor.secondaryLight1,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () { 
+                                        nextScreen(context, const RegisterPage());//  logic đăng ký 
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-
-                        Text.rich(TextSpan(
-                          text: "Don't have an account? ",
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: "Register here",
-                                style: const TextStyle(
-                                    color: Color(0xFFFF5600),
-                                    decoration: TextDecoration.underline),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    nextScreen(context, const RegisterPage());
-                                  }),
-                          ],
-                        )),
-                      ],
-                    )),
+                ],
               ),
             ),
     );
   }
 
   login() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (formKey.currentState!.validate()) {
       
       setState(() {
@@ -162,10 +230,10 @@ class _LoginPageState extends State<LoginPage> {
       });
       var token = await _authApi.login(email: email, password: password);
       
-      await HelperFunctions.saveToken(token);
-      
-      print(token);
-
+      await BaseAPI.saveToken(token);
+      print(BaseAPI.token);
+    //  await prefs.setString('token',token);
+    
      
       // ignore: unnecessary_null_comparison
       if(token != null){
