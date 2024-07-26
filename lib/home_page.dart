@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:managerment/ChatPage/chat_page.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/ProjectPage/project_page.dart';
 import 'package:managerment/TaskPage/task_page.dart';
-import 'package:managerment/api_services/decode_jwt.dart';
-import 'package:managerment/model/task_model.dart';
 import 'package:managerment/profile/profile_screen.dart';
-import 'ChatPage/home_page.dart';
+import 'ChatPage/home_page_chat.dart';
 
 class HomePage extends StatefulWidget {
   final String token;  

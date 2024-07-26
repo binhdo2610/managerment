@@ -3,7 +3,7 @@ import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_card.dart';
 import 'package:managerment/api_services/project_service.dart';
 import 'package:managerment/theme/app_theme.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class OverViewScroll extends StatefulWidget {
   const OverViewScroll({Key? key}) : super(key: key);
 
@@ -51,13 +51,13 @@ class _OverViewState extends State<OverViewScroll> with TickerProviderStateMixin
             indicatorSize:  TabBarIndicatorSize.label,
             tabs: [
               Tab(
-                text: "My Project",
+                text: AppLocalizations.of(context)!.myProject,
               ),
               Tab(
-                text: "In Progress",
+                text: AppLocalizations.of(context)!.inProgress,
               ),
               Tab(
-                text: "Completed",
+                text: AppLocalizations.of(context)!.completed,
               ),
             ],
           ),

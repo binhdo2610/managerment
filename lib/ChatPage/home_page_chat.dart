@@ -1,3 +1,6 @@
+import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/theme/app_theme.dart';
+
 import '../api_services/helper_function.dart';
 import '../LoginPage/login_page.dart';
 import '../ChatPage/profile_page.dart';
@@ -8,6 +11,8 @@ import '../widgets/group_tile.dart';
 import '../widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class HomeChatPage extends StatefulWidget {
   const HomeChatPage({Key? key}) : super(key: key);
@@ -76,10 +81,10 @@ class _HomeChatPageState extends State<HomeChatPage> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text(
-          "Groups",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 27),
+        title: Text(
+          AppLocalizations.of(context)!.group,
+          style: GoogleFonts.poppins(
+              color: ThemeColor.background, fontWeight: FontWeight.bold, fontSize: 27),
         ),
       ),
       drawer: Drawer(
@@ -112,9 +117,9 @@ class _HomeChatPageState extends State<HomeChatPage> {
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             leading: const Icon(Icons.group),
-            title: const Text(
-              "Groups",
-              style: TextStyle(color: Colors.black),
+            title: Text(
+              AppLocalizations.of(context)!.group,
+              style: GoogleFonts.poppins(color: ThemeColor.dark1),
             ),
           ),
           ListTile(

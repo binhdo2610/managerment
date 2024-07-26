@@ -1,3 +1,6 @@
+import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/theme/app_theme.dart';
+
 import '../api_services/helper_function.dart';
 import '../ChatPage/chat_page.dart';
 import '../api_services/database_service.dart';
@@ -5,6 +8,7 @@ import '../widgets/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -51,10 +55,10 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text(
-          "Search",
-          style: TextStyle(
-              fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
+        title: Text(
+          AppLocalizations.of(context)!.search,
+          style: GoogleFonts.poppins(
+              fontSize: 27, fontWeight: FontWeight.bold, color: ThemeColor.background),
         ),
       ),
       body: Column(
@@ -67,12 +71,12 @@ class _SearchPageState extends State<SearchPage> {
                 Expanded(
                   child: TextField(
                     controller: searchController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
+                    style:  GoogleFonts.poppins(color: ThemeColor.background),
+                    decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Search groups....",
+                        hintText: AppLocalizations.of(context)!.searchGroup,
                         hintStyle:
-                            TextStyle(color: Colors.white, fontSize: 16)),
+                            GoogleFonts.poppins(color: ThemeColor.background, fontSize: 16)),
                   ),
                 ),
                 GestureDetector(
@@ -85,9 +89,9 @@ class _SearchPageState extends State<SearchPage> {
                     decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(40)),
-                    child: const Icon(
+                    child:  Icon(
                       Icons.search,
-                      color: Colors.white,
+                      color: ThemeColor.background,
                     ),
                   ),
                 )
@@ -175,7 +179,7 @@ class _SearchPageState extends State<SearchPage> {
             setState(() {
               isJoined = !isJoined;
             });
-            showSnackbar(context, Colors.green, "Successfully joined he group");
+            showSnackbar(context, ThemeColor.success, AppLocalizations.of(context)!.successJoinGroup);
             Future.delayed(const Duration(seconds: 2), () {
               nextScreen(
                   context,
@@ -187,7 +191,7 @@ class _SearchPageState extends State<SearchPage> {
           } else {
             setState(() {
               isJoined = !isJoined;
-              showSnackbar(context, Colors.red, "Left the group $groupName");
+              showSnackbar(context, ThemeColor.error, AppLocalizations.of(context)!.leftGroup(groupName));
             });
           }
         },
@@ -200,9 +204,9 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text(
-                  "Joined",
-                  style: TextStyle(color: Colors.white),
+                child: Text(
+                  AppLocalizations.of(context)!.joined,
+                  style: GoogleFonts.poppins(color: ThemeColor.background),
                 ),
               )
             : Container(
@@ -212,8 +216,8 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text("Join Now",
-                    style: TextStyle(color: Colors.white)),
+                child: Text(AppLocalizations.of(context)!.joinNow,
+                    style: GoogleFonts.poppins(color: ThemeColor.background)),
               ),
       ),
     );

@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/ProjectPage/project_page.dart';
 import 'package:managerment/api_services/project_service.dart';
 import 'package:managerment/theme/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class AddProjectScreen extends StatefulWidget {
   final Map? toProject;
@@ -36,7 +38,7 @@ class _AddProjectState extends State<AddProjectScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isEdit ? 'Edit Project' : 'Add Project',
+          isEdit ? AppLocalizations.of(context)!.editProject : AppLocalizations.of(context)!.addProject,
           style: GoogleFonts.poppins(fontSize: 24),
         ),
         centerTitle: true,
@@ -68,7 +70,7 @@ class _AddProjectState extends State<AddProjectScreen> {
                           fontSize: 18,
                         ),
                         decoration: InputDecoration(
-                          labelText: "Title",
+                          labelText: AppLocalizations.of(context)!.title,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Get.isDarkMode ? ThemeColor.background : ThemeColor.dark1,
@@ -86,7 +88,7 @@ class _AddProjectState extends State<AddProjectScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter a title';
+                            return AppLocalizations.of(context)!.pleaseEnterATitle;
                           }
                           return null;
                         },
@@ -108,7 +110,7 @@ class _AddProjectState extends State<AddProjectScreen> {
                           ),
                           textStyle: GoogleFonts.poppins(fontSize: 18),
                         ),
-                        child: Text(isEdit ? 'Update' : 'Create'),
+                        child: Text(isEdit ? AppLocalizations.of(context)!.update : AppLocalizations.of(context)!.create),
                       ),
                     ],
                   ),
