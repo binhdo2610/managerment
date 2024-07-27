@@ -1,9 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/LoginPage/login_page.dart';
 import 'package:managerment/api_services/auth_api.dart';
 import 'package:managerment/api_services/auth_service.dart';
 import 'package:managerment/api_services/helper_function.dart';
 import 'package:managerment/home_page.dart';
+import 'package:managerment/theme/app_theme.dart';
 
 import '../../widgets/widgets.dart';
 import 'package:flutter/gestures.dart';
@@ -32,19 +35,6 @@ class _RegisterPageState extends State<RegisterPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    // }
-    // // gettingUserData() async {
-    // //   await HelperFunctions.getUserEmailFromSF().then((value) {
-    // //     setState(() {
-    // //       email = value!;
-    // //     });
-    // //   });
-    // //   await HelperFunctions.getUserNameFromSF().then((val) {
-    // //     setState(() {
-    // //       username = val!;
-    // //     });
-    // //   });
   }
 
   @override
@@ -55,33 +45,72 @@ class _RegisterPageState extends State<RegisterPage> {
               child: CircularProgressIndicator(
                   color: Theme.of(context).primaryColor))
           : SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-                child: Form(
-                    key: formKey,
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    color: Theme.of(context).primaryColor,
+                    padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
+                      children: [
                         const Text(
-                          "Groupie",
+                          "Sign Up",
                           style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                            "Create your account now to chat and explore",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w400)),
-                        SizedBox(
-                          height: 10,
+                          "Create your account now",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400),
                         ),
-                        Image.asset("assets/logo.jpg"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
+                        const SizedBox(height: 20),
+                        Text.rich(TextSpan(
+                          text: "Already have an account? ",
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 14),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: "Log in",
+                                style: GoogleFonts.poppins(
+                                color: ThemeColor.secondaryLight1,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    nextScreen(context, const LoginPage());
+                                  }),
+                          ],
+                        )),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(top: 0),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                           TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "Username",
                               prefixIcon: Icon(
@@ -193,50 +222,54 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(
                           height: 20,
                         ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                              
                                 elevation: 0,
-                                backgroundColor:
-                                    Color.fromARGB(255, 130, 233, 251),
+                                backgroundColor:ThemeColor.secondaryLight1,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30))),
                             child: const Text(
                               "Register",
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                             onPressed: () {
                               register();
                             },
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text.rich(TextSpan(
-                          text: "Already have an account? ",
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: "Login now",
-                                style: const TextStyle(
-                                    color: Color(0xFFFF5600),
-                                    decoration: TextDecoration.underline),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    nextScreen(context, const LoginPage());
-                                  }),
+                        SizedBox(height: 14,),
+                        Image.asset('images/logo.png', height: 60,width: 60,),
                           ],
-                        )),
-                      ],
-                    )),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
     );
   }
+  InputDecoration textInputDecoration = InputDecoration(
+  labelStyle: TextStyle(color: Colors.grey),
+  filled: true,
+  fillColor: Colors.white,
+  contentPadding: EdgeInsets.all(15),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: ThemeColor.grey300, width: 2.0),
+    borderRadius: BorderRadius.circular(25.0),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blue, width: 2.0),
+    borderRadius: BorderRadius.circular(25.0),
+  ),
+);
 
   register() async {
     if (formKey.currentState!.validate()) {

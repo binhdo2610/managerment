@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:drag_and_drop/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/LoginPage/login_page.dart';
+import 'package:managerment/api_services/auth_service.dart';
 import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/api_services/user_service.dart';
 import 'package:managerment/model/user_model.dart';
@@ -22,6 +24,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isEditingProfile = false;
   late Future<UserModel> futureUser;
+  late AuthService _authService = AuthService();
 
   Future<bool> _onWillPop() async {
     if (_isEditingProfile) {
@@ -97,9 +100,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               side: BorderSide.none,
               shape: StadiumBorder(),
             ),
+
             child: Text(
               AppLocalizations.of(context)!.editProfile,
               style: GoogleFonts.poppins(color: ThemeColor.dark1),
+
             ),
           ),
         ),
@@ -120,7 +125,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ProfileMenu(
           text: AppLocalizations.of(context)!.logout,
           icon:  Icon(Icons.logout, color: ThemeColor.grey700),
-          press: () {},
+          press: () async {
+           await _authService.signOut();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginPage()),
+                                (route) => false);},
         ),
       ],
     );

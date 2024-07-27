@@ -3,10 +3,16 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:managerment/api_services/base_api.dart';
+import 'package:managerment/api_services/helper_function.dart';
 import 'package:managerment/api_services/message_service.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class ProjectService {
+  
   static Future<bool> SubmitProject(String title, BuildContext context) async {
     var url = '${BaseAPI.FLUTTER_API_URL}' + '/api/projects/';
     final body = {
@@ -28,10 +34,12 @@ class ProjectService {
   }
 
   static Future<List> FetchProject() async {
-    var url = '${BaseAPI.FLUTTER_API_URL}/api/projects/';
+    
+    var url = '${BaseAPI.FLUTTER_API_URL}api/Projects/';
+    
     final response = await Dio().get(
       url,
-      options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
+      options: Options(headers:BaseAPI.FLUTTER_ACCESS_TOKEN,),
     );
 
     if (response.statusCode == 200) {

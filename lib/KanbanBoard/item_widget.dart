@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:managerment/KanbanBoard/item.dart';
+
 class ItemWidget extends StatelessWidget {
   final Item item;
 
@@ -11,7 +12,7 @@ class ItemWidget extends StatelessWidget {
           vertical: 8.0,    // Điều chỉnh cho giao diện di động
         ),
         title: Text(
-          item.title,
+          item.title!,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -57,18 +58,21 @@ class ItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Điều chỉnh cho giao diện di động
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
+    return Container(
+      constraints: BoxConstraints(minWidth: 100, maxWidth: 400), // Đảm bảo có ràng buộc kích thước
+      child: Card(
+        elevation: 8.0,
+        margin: new EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Điều chỉnh cho giao diện di động
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        child: makeListTile(item),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: makeListTile(item),
+        ),
       ),
     );
   }

@@ -11,9 +11,11 @@ class ProgressCart extends StatelessWidget {
   final Map item;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final String projectId ;
   final VoidCallback onRefresh;
   ProgressCart(
       {Key? key,
+      required this.projectId,
       required this.item,
       required this.onEdit,
       required this.onDelete,
@@ -24,7 +26,9 @@ class ProgressCart extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedDate =
         DateFormat('yyyy-MM-dd').format(DateTime.parse(item['expiredAt']));
+
     String expiredAt = AppLocalizations.of(context)!.expiredAt(formattedDate);
+
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: GestureDetector(
@@ -32,7 +36,9 @@ class ProgressCart extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => KanbanBoard(),
+
+              builder: (context) => KanbanBoard(projectId: projectId,),
+
             ),
           );
         },
