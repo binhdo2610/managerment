@@ -1,17 +1,18 @@
-
-
 import 'package:country_flags/country_flags.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// ignore: unnecessary_import
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:managerment/Logic/Cubits/Language_cubits.dart';
 import 'package:managerment/ProjectPage/add_project.dart';
 import 'package:managerment/ProjectPage/over_view_scroll.dart';
 import 'package:managerment/theme/app_theme.dart';
 import 'package:managerment/theme/theme_service.dart';
+import 'package:provider/provider.dart';
 
 class ProjectPage extends StatefulWidget {
   final String username;
@@ -48,7 +49,7 @@ class _ProjectPageState extends State<ProjectPage> {
                 color: ThemeColor.info,
               ),
               child: Text(
-                'Change Something',
+                AppLocalizations.of(context)!.changeSomethings,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -63,31 +64,31 @@ class _ProjectPageState extends State<ProjectPage> {
                 leading: Icon(Get.isDarkMode
                     ? Icons.wb_sunny_rounded
                     : Icons.nightlight_round),
-                title: Text('Dark/Light'),
+                title: Text(AppLocalizations.of(context)!.darkLight),
               ),
             ),
             ExpansionTile(
-              title: Text('Language'),
+              title: Text(AppLocalizations.of(context)!.languages),
               leading: Icon(Icons.language),
               children: [
                 GestureDetector(
-                  onTap: () {},
-
+                  onTap: () =>
+                      context.read<LanguageCubits>().change(Locale('en')),
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('US', shape: Circle()),
-                    title: Text('English'),
+                    title: Text(AppLocalizations.of(context)!.english),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
-
+                  onTap: () =>
+                      context.read<LanguageCubits>().change(Locale('vi')),
                   child: ListTile(
                     leading: CountryFlag.fromCountryCode('VN', shape: Circle()),
-                    title: Text('Vietnam'),
+                    title: Text(AppLocalizations.of(context)!.vietnamese),
                   ),
                 )
               ],
-            ),
+            )
           ],
         ),
       ),
@@ -146,29 +147,22 @@ class _ProjectPageState extends State<ProjectPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Hello, ',
-                                    style: GoogleFonts.poppins(
-                                        color: ThemeColor.background,
-                                        fontSize: 28),
-                                  ),
-                                  TextSpan(
-                                    text: widget.username,
-
-                                    style: GoogleFonts.poppins(
-                                      color: ThemeColor.background,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              AppLocalizations.of(context)!.hello,
+                              style: GoogleFonts.poppins(
+                                color: ThemeColor.background,
+                                fontSize: 25,
                               ),
                             ),
                             Text(
-                              "Have a nice day!",
+                              widget.username,
+                              style: GoogleFonts.poppins(
+                                color: ThemeColor.background,
+                                fontSize: 25,
+                              ),
+                            ),
+                            Text(
+                              AppLocalizations.of(context)!.haveANiceDay,
                               style: GoogleFonts.poppins(
                                 color: ThemeColor.background,
                                 fontSize: 18,
@@ -206,7 +200,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                 height: 5,
                               ),
                               Text(
-                                'Create new Project',
+                                AppLocalizations.of(context)!.createNewProject,
                                 style: GoogleFonts.poppins(
                                   color: ThemeColor.background,
                                   fontSize: 18,
@@ -233,7 +227,7 @@ class _ProjectPageState extends State<ProjectPage> {
                           child: TextField(
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Search your task',
+                              hintText: AppLocalizations.of(context)!.searchYourProjects,
                               hintStyle: GoogleFonts.montserrat(
                                 color: ThemeColor.grey200,
                                 fontSize: 18,
@@ -251,10 +245,9 @@ class _ProjectPageState extends State<ProjectPage> {
                   padding: const EdgeInsets.only(left: 20, top: 20),
                   child: OverViewScroll(),
                 ),
-                //  
+                //
               ],
             ),
-         
           ),
         ),
       ),

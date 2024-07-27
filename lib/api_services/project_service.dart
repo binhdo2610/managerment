@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:managerment/api_services/base_api.dart';
 import 'package:managerment/api_services/helper_function.dart';
 import 'package:managerment/api_services/message_service.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ProjectService {
   
@@ -20,9 +24,11 @@ class ProjectService {
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
     if (response.statusCode == 200) {
-      MessageService.ShowMessage("Created successfully", context);
+      MessageService.ShowMessage(
+          AppLocalizations.of(context)!.createSuccessfully, context);
     } else {
-      MessageService.ShowMessage("Failed to create", context);
+      MessageService.ShowMessage(
+          AppLocalizations.of(context)!.failedToCreate, context);
     }
     return true;
   }
@@ -59,10 +65,11 @@ class ProjectService {
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
     if (response.statusCode == 204) {
-      MessageService.ShowMessage("Delete successfully", context);
+      MessageService.ShowMessage(
+          AppLocalizations.of(context)!.deleteSuccessfully, context);
     } else {
-      MessageService.ShowMessage("Delete failed", context);
-
+      MessageService.ShowMessage(
+          AppLocalizations.of(context)!.failedToDelete, context);
     }
     return true;
   }
@@ -79,9 +86,11 @@ class ProjectService {
       options: Options(headers: BaseAPI.FLUTTER_ACCESS_TOKEN),
     );
     if (response.statusCode == 200) {
-      MessageService.ShowMessage("Update successfully", context);
+      MessageService.ShowMessage(
+          AppLocalizations.of(context)!.updateSuccessfully, context);
     } else {
-      MessageService.ShowMessage("Update failed", context);
+      MessageService.ShowMessage(
+          AppLocalizations.of(context)!.failedToUpdate, context);
     }
     return true;
   }

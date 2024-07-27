@@ -11,6 +11,7 @@ import 'package:managerment/profile/components/profile_menu.dart';
 import 'package:managerment/profile/components/profile_pic.dart';
 import 'package:managerment/profile/update_profile_screen.dart';
 import 'package:managerment/theme/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userid;
@@ -51,8 +52,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           backgroundColor: ThemeColor.primary,
           centerTitle: true,
           title: Text(
-            "Profile",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            AppLocalizations.of(context)!.profile,
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
           ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -70,84 +71,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-Widget _buildProfileContent() {
-  return FutureBuilder<UserModel>(
-    future: futureUser,
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(
-          child: Text('Error: ${snapshot.error}'),
-        );
-      } else if (snapshot.hasData) {
-        UserModel user = snapshot.data!;
-        return Column(
-          children: [
-            ProfilePic(), // Ensure ProfilePic has constrained dimensions
-            SizedBox(height: 10),
-            Text(
-              user.email!,
-              style: TextStyle(color: ThemeColor.grey600, fontSize: 15),
+
+  Widget _buildProfileContent() {
+    return Column(
+      children: [
+        const ProfilePic(),
+        const SizedBox(height: 10),
+        Text(
+          AppLocalizations.of(context)!.userName,
+          style: GoogleFonts.poppins(color: ThemeColor.grey600, fontSize: 15),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'Email@gmail.com',
+          style: GoogleFonts.poppins(color: ThemeColor.grey400, fontSize: 13),
+        ),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: 200,
+          child: ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _isEditingProfile = true;
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ThemeColor.secondaryLight4,
+              side: BorderSide.none,
+              shape: StadiumBorder(),
             ),
-            SizedBox(height: 10),
-            Text(
-              user.username!,
-              style: TextStyle(color: ThemeColor.grey400, fontSize: 13),
+
+            child: Text(
+              AppLocalizations.of(context)!.editProfile,
+              style: GoogleFonts.poppins(color: ThemeColor.dark1),
+
             ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 200,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _isEditingProfile = true;
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ThemeColor.secondaryLight4,
-                  shape: StadiumBorder(),
-                ),
-                child: Text(
-                  'Edit Profile',
-                  style: GoogleFonts.poppins(color: ThemeColor.dark1),
-                ),
-              ),
-            ),
-            Divider(),
-            SizedBox(height: 10),
-            ProfileMenu(
-              text: "Notifications",
-              icon: Icon(Icons.notifications, color: ThemeColor.grey700),
-              press: () {},
-            ),
-            SizedBox(height: 10),
-            ProfileMenu(
-              text: "Settings",
-              icon: Icon(Icons.settings, color: ThemeColor.grey700),
-              press: () {},
-            ),
-            SizedBox(height: 10),
-            ProfileMenu(
-              text: "Log Out",
-              icon: Icon(Icons.logout, color: ThemeColor.grey700),
-              press: () async{
-                 await _authService.signOut();
+          ),
+        ),
+        Divider(),
+        const SizedBox(height: 10),
+        ProfileMenu(
+          text: AppLocalizations.of(context)!.notification,
+          icon:  Icon(Icons.notifications, color: ThemeColor.grey700),
+          press: () {},
+        ),
+        const SizedBox(height: 10),
+        ProfileMenu(
+          text: AppLocalizations.of(context)!.settings,
+          icon:  Icon(Icons.settings, color: ThemeColor.grey700),
+          press: () {},
+        ),
+        const SizedBox(height: 10),
+        ProfileMenu(
+          text: AppLocalizations.of(context)!.logout,
+          icon:  Icon(Icons.logout, color: ThemeColor.grey700),
+          press: () async {
+           await _authService.signOut();
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => const LoginPage()),
-                                (route) => false);
-              },
-            ),
-          ],
-        );
-      } else {
-        return Center(child: Text('No data available'));
-      }
-    },
-  );
-}
-
+                                (route) => false);},
+        ),
+      ],
+    );
+  }
 
   Widget _buildEditProfileContent() {
     return UpdateProfileScreen(

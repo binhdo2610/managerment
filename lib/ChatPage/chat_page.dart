@@ -1,16 +1,13 @@
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:managerment/theme/app_theme.dart';
-
 import '../ChatPage/group_info.dart';
-
 import '../api_services/database_service.dart';
 import'../widgets/message_tile.dart';
-
 import '../widgets/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ChatPage extends StatefulWidget {
   final String groupId;
   final String groupName;
@@ -88,8 +85,8 @@ class _ChatPageState extends State<ChatPage> {
                     child: TextFormField(
                   controller: messageController,
                   style:GoogleFonts.poppins(color: ThemeColor.background),
-                  decoration: const InputDecoration(
-                    hintText: "Send a message...",
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.sendAMessage,
                     hintStyle: TextStyle(color: ThemeColor.background, fontSize: 16),
                     border: InputBorder.none,
                   ),

@@ -5,7 +5,7 @@ import 'package:managerment/AddNewTask/add_new_task.dart';
 import 'package:managerment/ProjectPage/progress_cart.dart';
 import 'package:managerment/api_services/task_service.dart';
 import 'package:managerment/theme/app_theme.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProjectDetail extends StatefulWidget {
   final String projectId;
   const ProjectDetail({Key? key, required this.projectId}) : super(key: key);
@@ -29,7 +29,7 @@ class _ProjectDetail extends State<ProjectDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Project Details',
+          AppLocalizations.of(context)!.projectDetail,
         ),
         centerTitle: true,
       ),
@@ -81,7 +81,7 @@ class _ProjectDetail extends State<ProjectDetail> {
                                 width: 10,
                               ),
                               Text(
-                                'Add task',
+                                AppLocalizations.of(context)!.addTask,
                                 style: GoogleFonts.poppins(
                                   color: ThemeColor.background,
                                   fontSize: 15,

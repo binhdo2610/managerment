@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:managerment/ProjectPage/project_detail.dart';
 import 'package:managerment/api_services/task_service.dart';
 import 'package:managerment/theme/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddNewTask extends StatefulWidget {
   final String projectId;
@@ -66,61 +68,42 @@ class _MyWidgetState extends State<AddNewTask> {
     }
   }
 
-  _selectedTime(BuildContext context, String timeType) async {
-    final TimeOfDay? result =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    if (result != null) {
-      setState(() {
-        if (timeType == 'StartTime') {
-          startTime.text = result.format(context);
-        } else if (timeType == 'EndTime') {
-          endTime.text = result.format(context);
-        }
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor:
+            Get.isDarkMode ? ThemeColor.dark1 : ThemeColor.primaryLight1,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(CupertinoIcons.arrow_left_square,
+              size: 40, color: ThemeColor.background),
+        ),
+        title: Text(
+          isEdit
+              ? AppLocalizations.of(context)!.editTask
+              : AppLocalizations.of(context)!.addNewTask,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 25,
+            decoration: TextDecoration.none,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
-            color: Color.fromRGBO(130, 0, 255, 1),
+            color: Get.isDarkMode ? ThemeColor.dark1 : ThemeColor.primaryLight1,
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: 10, right: 20, top: 10, bottom: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(CupertinoIcons.arrow_left_square,
-                                size: 40, color: Colors.white),
-                          ),
-                          SizedBox(
-                            width: 70,
-                          ),
-                          Text(
-                            isEdit ? 'Edit Task' : 'Add New Task',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.montserrat(
-                              color: Colors.white,
-                              fontSize: 25,
-                              decoration: TextDecoration.none,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, top: 10, bottom: 10),
@@ -132,24 +115,25 @@ class _MyWidgetState extends State<AddNewTask> {
                           fontSize: 20,
                         ),
                         decoration: InputDecoration(
-                          labelText: 'Title',
+                          labelText: AppLocalizations.of(context)!.title,
                           enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           fillColor: Colors.white,
-                          labelStyle: GoogleFonts.montserrat(
+                          labelStyle: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 22,
                               fontWeight: FontWeight.bold),
                         ),
-                        // ignore: body_might_complete_normally_nullable
                         validator: (value) {
-                          // ignore: unnecessary_null_comparison
                           if (titleController.value == null ||
-                              titleController.value.text.isEmpty)
-                            return 'This field is required';
+                              titleController.value.text.isEmpty) {
+                            return AppLocalizations.of(context)!
+                                .pleaseEnterATitle;
+                          }
+                          return null; // added to return null if validation passes
                         },
                       ),
                     ),
@@ -159,13 +143,13 @@ class _MyWidgetState extends State<AddNewTask> {
                       child: TextFormField(
                         controller: dateController,
                         cursorColor: Colors.white,
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 20,
                         ),
                         readOnly: true,
                         decoration: InputDecoration(
-                          labelText: 'Date',
+                          labelText: AppLocalizations.of(context)!.date,
                           suffixIcon: GestureDetector(
                             onTap: () {
                               _selectedDate(context);
@@ -196,7 +180,9 @@ class _MyWidgetState extends State<AddNewTask> {
                       padding: EdgeInsets.only(
                           left: 20, right: 20, top: 20, bottom: 20),
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Get.isDarkMode
+                              ? ThemeColor.dark3
+                              : ThemeColor.background,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30),
@@ -205,117 +191,54 @@ class _MyWidgetState extends State<AddNewTask> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  child: TextField(
-                                    readOnly: true,
-                                    controller: startTime,
-                                    decoration: InputDecoration(
-                                      labelText: "Start Time",
-                                      suffixIcon: GestureDetector(
-                                        onTap: () {
-                                          _selectedTime(context, 'StartTime');
-                                        },
-                                        child: Icon(
-                                          CupertinoIcons.alarm,
-                                          size: 30,
-                                          color: Colors.black45,
-                                        ),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black45),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black45),
-                                      ),
-                                      fillColor: Colors.black45,
-                                      labelStyle: GoogleFonts.poppins(
-                                        color: Colors.black87,
-                                        fontSize: 22,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  child: TextField(
-                                    readOnly: true,
-                                    controller: endTime,
-                                    decoration: InputDecoration(
-                                      labelText: 'End Time',
-                                      suffixIcon: GestureDetector(
-                                        onTap: () {
-                                          _selectedTime(context, "EndTime");
-                                        },
-                                        child: Icon(
-                                          CupertinoIcons.alarm,
-                                          size: 30,
-                                          color: ThemeColor.dark1,
-                                        ),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black45),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black45),
-                                      ),
-                                      fillColor: Colors.black45,
-                                      labelStyle: GoogleFonts.poppins(
-                                        color: Colors.black87,
-                                        fontSize: 22,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 20),
                             child: TextFormField(
                                 controller: desController,
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
                                 maxLines: 3,
-                                cursorColor: Colors.black45,
+                                cursorColor: Get.isDarkMode
+                                    ? ThemeColor.background
+                                    : ThemeColor.dark1,
                                 style: GoogleFonts.poppins(
-                                  color: ThemeColor.dark1,
+                                  color: Get.isDarkMode
+                                      ? ThemeColor.background
+                                      : ThemeColor.dark1,
                                   fontSize: 18,
                                 ),
                                 decoration: InputDecoration(
-                                  labelText: "Description",
+                                  labelText:
+                                      AppLocalizations.of(context)!.description,
                                   enabledBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: ThemeColor.dark3),
+                                    borderSide: BorderSide(
+                                        color: Get.isDarkMode
+                                            ? ThemeColor.background
+                                            : ThemeColor.dark3),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: ThemeColor.dark3),
+                                    borderSide: BorderSide(
+                                        color: Get.isDarkMode
+                                            ? ThemeColor.background
+                                            : ThemeColor.dark3),
                                   ),
-                                  fillColor: Colors.black45,
+                                  fillColor: Get.isDarkMode
+                                      ? ThemeColor.background
+                                      : ThemeColor.dark3,
                                   labelStyle: GoogleFonts.poppins(
-                                    color: ThemeColor.dark2,
+                                    color: Get.isDarkMode
+                                        ? ThemeColor.background
+                                        : ThemeColor.dark1,
                                     fontSize: 18,
                                   ),
                                 ),
-                                // ignore: body_might_complete_normally_nullable
                                 validator: (value) {
                                   if (desController.value.text.isEmpty) {
-                                    return 'Please enter a description';
+                                    return AppLocalizations.of(context)!.pleaseEnterADescription;
                                   }
+                                  return null; // added to return null if validation passes
                                 }),
                           ),
                           SizedBox(
-                            height: 250,
+                            height: 280,
                           ),
                           GestureDetector(
                             onTap: () async {
@@ -342,7 +265,7 @@ class _MyWidgetState extends State<AddNewTask> {
                               ),
                               child: Center(
                                 child: Text(
-                                  isEdit ? 'Update Task' : "Create task",
+                                  isEdit ? AppLocalizations.of(context)!.updateTask : AppLocalizations.of(context)!.createTask,
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 25,

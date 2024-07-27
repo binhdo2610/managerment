@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:managerment/KanbanBoard/kanban_board.dart';
 import 'package:managerment/theme/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProgressCart extends StatelessWidget {
   final Map item;
@@ -25,7 +26,9 @@ class ProgressCart extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedDate =
         DateFormat('yyyy-MM-dd').format(DateTime.parse(item['expiredAt']));
-    String expiredAt = 'Expired At: $formattedDate';
+
+    String expiredAt = AppLocalizations.of(context)!.expiredAt(formattedDate);
+
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: GestureDetector(
@@ -33,7 +36,9 @@ class ProgressCart extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
+
               builder: (context) => KanbanBoard(projectId: projectId,),
+
             ),
           );
         },
